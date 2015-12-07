@@ -1,4 +1,4 @@
-class channel(object):
+class channel(object): #Abstract class for all channels
     def authenticate(self):
         raise NotImplementedError
 
@@ -6,11 +6,11 @@ class channel(object):
         raise NotImplementedError
 
 
-class facebook(channel):
+class facebook(channel): #Class for facebook
     pass
 
-class twitter(channel):
+class twitter(channel): #Class for twitter
     pass
 
-class mail(channel):
+class mail(channel): #Class for mail
     pass
