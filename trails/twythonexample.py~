@@ -1,0 +1,4 @@
+from twython import Twython
+twitter = Twython()
+
+user_timeline = twitter.getUserTimeline(screen_name='pythoncentral')
