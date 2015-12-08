@@ -7,5 +7,5 @@ def test_facebook_broadcast():
     user = graph.get_object("me")
     message = "Testing facebook broadcast"
     face_book = channels.fb(access_token, message)
-    result = fb.broadcast()
+    result = face_book.broadcast()
     assert user["id"] == result["id"]
