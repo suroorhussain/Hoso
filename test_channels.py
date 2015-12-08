@@ -6,6 +6,6 @@ def test_facebook_broadcast():
     graph = facebook.GraphAPI(access_token)
     user = graph.get_object("me")
     message = "Testing facebook"
-    face_book = channels.facebook(access_token, message)
+    face_book = channels.fb(access_token, message)
     result = face_book.broadcast()
     assert user["id"] in result["id"]

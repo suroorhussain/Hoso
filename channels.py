@@ -8,7 +8,7 @@ class channel(object): #Abstract class for all channels
         raise NotImplementedError
 
 
-class facebook(channel): #Class for facebook
+class fb(channel): #Class for facebook
     def __init__(self, token, message):
         self.access_token = token
         self.post = message
