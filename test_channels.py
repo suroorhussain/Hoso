@@ -2,7 +2,7 @@ import channels
 import facebook
 
 def test_facebook_broadcast():
-    access_token = """CAACEdEose0cBAH8DfFEcTzrYXrdBlsPwJZBwqjZBqZAHyjDBViaZANLPHs3xXEeE91uyww5MZAcuLoA2dzGmqwo49ubUd7VHPbMcmjMlmieBXYv9AOfU5D6bCeCnLUILCEktevMnyiELHZAQcbE1zKXVkjKZA3oFgV1F7YU49eB5ZAGF1TqwbEgK4w0qQIIeCMWf3mylueh7VQZDZD"""
+    access_token = """CAACEdEose0cBAPbYUGlhZCSygVMF7iNXMdmbxTZC70ZC8TB8DltmLRNoZC8fvTxR3nMp19KOk3geQy8cHzM9VSd2CUIOBcwmemSnE4V57LdvnSgdYs9Ri1haRnU7kiBPTgZBuJwS97CiQ4hYZC3hz6gk9oVJQZA1blmnxQD6RaC2bHHiSwxrwGdqiIyZCN7GZC15WjzTAzR0vJAZDZD"""
     graph = facebook.GraphAPI(access_token)
     user = graph.get_object("me")
     message = "Testing facebook"
