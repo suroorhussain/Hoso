@@ -1,4 +1,0 @@
-from sys import argv
-
-message = argv[1]
-print message
