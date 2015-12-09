@@ -1,11 +1,11 @@
 import channels
 import facebook
 
+access_token = """CAACEdEose0cBABzZAIKQQ4DTrbJS0sru0heXJwIm70abeOF705azqlgx9ulWi9GCHorQcFDIptDWSR1CVnb6hBDlDk1ZAUa1P4YPTAplTvPWzIPxAZAymEEtnjQGcYOG2KdZClZBaardPGKC153upC7w4C4KY5O3KgsqOj01CO4yrEV99rUBhMmjtrkZB8fEuYzsMa8idJ6gZDZD"""
+message = "Duplication test"
 def test_facebook_broadcast():
-    access_token = """CAACEdEose0cBABzZAIKQQ4DTrbJS0sru0heXJwIm70abeOF705azqlgx9ulWi9GCHorQcFDIptDWSR1CVnb6hBDlDk1ZAUa1P4YPTAplTvPWzIPxAZAymEEtnjQGcYOG2KdZClZBaardPGKC153upC7w4C4KY5O3KgsqOj01CO4yrEV99rUBhMmjtrkZB8fEuYzsMa8idJ6gZDZD"""
     graph = facebook.GraphAPI(access_token)
     user = graph.get_object("me")
-    message = "Testing facebook"
     face_book = channels.fb(access_token, message)
     result = face_book.broadcast()
     assert user["id"] in result["id"]
@@ -17,4 +17,12 @@ def test_facebook_broadcast_expiry():
         user = graph.get_object("me")
     except facebook.GraphAPIError as e:
         assert 'expired' in e[0]
-    
+
+def test_facebook_broadcast_duplicate_message():
+    graph = facebook.GraphAPI(access_token)
+    user = graph.get_object("me")
+    face_book = channels.fb(access_token, message)
+    try:
+        face_book.broadcast()
+    except facebook.GraphAPIError as e:
+        assert e[0] == 'Duplicate status message'
