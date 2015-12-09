@@ -7,7 +7,7 @@ setup( name ='Hoso',
        author = 'Team Hoso',
        author_email='surusuroor@gmail.com',
        license='MIT',
-       packages=['Hwacha'],
+       packages=['hoso'],
        install_requires=['tweepy', 'facebook-sdk'],
        zip_safe=False
        )
