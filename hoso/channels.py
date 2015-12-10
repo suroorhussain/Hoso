@@ -1,4 +1,6 @@
+from google.appengine.api import mail
 import facebook
+
 
 class channel(object): #Abstract class for all channels
     def authenticate(self):
@@ -20,4 +22,8 @@ class twitter(channel): #Class for twitter
     pass
 
 class mail(channel): #Class for mail
+    message=mail.EmailMessage(sender="username",subject="subject")
+    message.to="To"
+    message.body="subject"
+    message.sent()
     pass
