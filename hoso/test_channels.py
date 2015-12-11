@@ -30,8 +30,8 @@ def test_facebook_broadcast_duplicate_message():
 def test_mail_broadcast():
     mock=Mock()
     mock.add_to()
-    mock.attribute="to_address"
+    mock.attribute="send_to _address"
     mock.add_to.assert_called_with()
     mock.set_text()
-    mock.attribute="message"
+    mock.attribute="text_message"
     mock.set_text.assert_called_with()
