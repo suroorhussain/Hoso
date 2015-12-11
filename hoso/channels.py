@@ -23,6 +23,11 @@ class twitter(channel): #Class for twitter
     pass
 
 class mail(channel): #Class for mail
+    
+    def __init__(self,sender,text_message):
+        self.sender=To_address
+        self.text_message=body
+        
     def broadcast(self):
         send_message= sendgrid.sendGridclient(username,password)
         message=sendgrid.Mail()
@@ -33,4 +38,4 @@ class mail(channel): #Class for mail
     
 
    
-    pass
+    
