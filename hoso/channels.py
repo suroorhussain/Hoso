@@ -29,7 +29,13 @@ class twitter(channel): #Class for twitter
         self.access_token = access_token
         self.access_token_secret = access_token_secret
         self.message = message
-
+        
+    def authentication(self):
+        auth = tweepy.OAuthHandler(self.CONSUMER_KEY,self.CONSUMER_SECRET)
+        auth.set_access_token(self.ACCESS_TOKEN,self.ACCESS_TOKEN_SECRET)
+        api = tweepy.API(auth)
+        return api
+ 
     def broadcast(self, api):
         self.api = api
         try:
