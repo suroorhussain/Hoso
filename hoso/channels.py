@@ -16,6 +16,7 @@ class fb(channel): #Class for facebook
     def broadcast(self):
         graph = facebook.GraphAPI(self.access_token)
         return graph.put_object("me", "feed", message = self.post)
+
 class twitter(channel): #Class for twitter
     pass
 
