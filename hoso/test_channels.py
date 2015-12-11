@@ -1,6 +1,6 @@
 import channels
 import facebook
-from mock import mock
+from mock import Mock
 
 access_token = """CAACEdEose0cBABzZAIKQQ4DTrbJS0sru0heXJwIm70abeOF705azqlgx9ulWi9GCHorQcFDIptDWSR1CVnb6hBDlDk1ZAUa1P4YPTAplTvPWzIPxAZAymEEtnjQGcYOG2KdZClZBaardPGKC153upC7w4C4KY5O3KgsqOj01CO4yrEV99rUBhMmjtrkZB8fEuYzsMa8idJ6gZDZD"""
 message = "Duplication test"
@@ -28,7 +28,7 @@ def test_facebook_broadcast_duplicate_message():
     except facebook.GraphAPIError as e:
         assert e[0] == 'Duplicate status message'
 def test_mail_broadcast():
-    mock=mock()
+    mock=Mock()
     mock.add_to()
     mock.attribute="to_address"
     mock.add_to.assert_called_with()
