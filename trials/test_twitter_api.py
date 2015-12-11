@@ -13,4 +13,5 @@ def test_user():
     }
     
     api = twitter_api.get_api(cfg)
-    assert api.me().name == 'hoso_dummy'
+    user_name = api.me().name
+    assert user_name == 'hoso_dummy'
