@@ -23,13 +23,21 @@ class fb(channel): #Class for facebook
         return graph.put_object("me", "feed", message = self.post)
 
 class twitter(channel): #Class for twitter
-    def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret):
+    def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret, message):
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.access_token = access_token
         self.access_token_secret = access_token_secret
-    
-    
+        self.message = message
+
+    def broadcast(self, api):
+        self.api = api
+        try:
+            status = api.update_status(status=self.message)
+        except tweepy.TweepError as e:
+            error_message = e[0][0]['message']
+            error_code = e[0][0]['code']
+            print error_message
 
 class mail(channel): #Class for mail
     
