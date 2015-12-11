@@ -11,6 +11,9 @@ def get_api(cfg):
 def get_tweet():
   return message.get_message()
 
+def return_code(error_code):
+  return error_code
+
 def main():
   # Fill in the values noted in previous step here
   cfg = { 
@@ -29,6 +32,7 @@ def main():
   except tweepy.TweepError as e:
     error_code = e[0][0]['code']
   print "error code: {}".format(error_code)
+  return_code(error_code)
   if error_code == 0:
     print 'tweet successfully posted'
   elif error_code == 32:
