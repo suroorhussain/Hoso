@@ -1,5 +1,8 @@
 import facebook
 import sendgrid
+import tweepy
+import requests
+request.packages.urllib3.disable_warnings()
 
 
 class channel(object): #Abstract class for all channels
@@ -18,13 +21,15 @@ class fb(channel): #Class for facebook
     def broadcast(self):
         graph = facebook.GraphAPI(self.access_token)
         return graph.put_object("me", "feed", message = self.post)
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> c379fc2c3ee43223efadb4c0dc6e4a2e1c6b7446
 class twitter(channel): #Class for twitter
-    pass
+    def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret):
+        self.consumer_key = consumer_key
+        self.consumer_secret = consumer_secret
+        self.access_token = access_token
+        self.access_token_secret = access_token_secret
+    
+    
 
 class mail(channel): #Class for mail
     
