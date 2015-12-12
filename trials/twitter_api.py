@@ -30,17 +30,13 @@ def main():
   try: 
     status = api.update_status(status=tweet) 
   except tweepy.TweepError as e:
+    message = e[0][0]['message']
     error_code = e[0][0]['code']
   print "error code: {}".format(error_code)
+  print message
   return_code(error_code)
-  if error_code == 0:
-    print 'tweet successfully posted'
-  elif error_code == 32:
-    print 'cud not authenticate'
-  elif error_code == 89:
-    print 'invalid or expired token'
-  elif error_code == 187:
-    print 'duplicate status'
+
+  
 # Yes, tweet is called 'status' rather confusing
 
 if __name__ == "__main__":
