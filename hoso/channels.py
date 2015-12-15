@@ -1,11 +1,13 @@
 import facebook
-import sendgrid
 import tweepy
+import sendgrid
+from sendgrid import SendGridError, SendGridClientError, SendGridServerError
+import os
 
 
 
 class channel(object): #Abstract class for all channels
-    def authenticate(self):
+    def authentication(self):
         raise NotImplementedError
 
     def broadcast(self):
@@ -71,23 +73,31 @@ class mail(channel): #Class for mail
     def __init__(self,sender,text_message,consumer_key, consumer_passwd):
         self.sender = To_address
         self.text_message =body
-        self.cousumer_key = api_username
-        self.consumer_password = api_key
 
-    def authenticate(self): #authentication for the mail service
+    def authentication(self): #authentication for the mail service
 
-        Username = self.consumer_key
-        Password = self.consumer_password
+        Username = os.getenv('API_USER')
+        Password = os.getenv('API_KEY')
+        auth = sendgrid.SendGridclient(Username, Password, raise_errors =True)
+        return auth
+    
+    def broadcast(self , api,  message):
+        
         try:
-            auth = sendgrid.sendGridclient('SEND_API_KEY')
-        
-    def broadcast(self):
-        
+            SendMessage = sendgrid.SendGridclient(Username, Password, raise_errors =True) 
         message=sendgrid.Mail()
         message.add_to(self.sender)
         message.set_text(self.text_message)
         message=sendgrid.mail(To = self.sender, Message = self.text_message)
         status,msg= send_message.send(message)
+
+        except SendGridClientError:
+            error_message = 'client errror'
+            return error_message
+        except SendGridServerError:
+            error_message = 'ServerError'
+            return error_message
+        
     
 
    
