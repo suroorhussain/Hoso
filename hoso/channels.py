@@ -85,12 +85,12 @@ class mail(channel): #Class for mail
         
         try:
             SendMessage = sendgrid.SendGridclient(Username, Password, raise_errors =True) 
-            message=sendgrid.Mail()
+            message = sendgrid.Mail()
             message.add_to(self.sender)
             message.set_text(self.text_message)
-            message=sendgrid.mail(To = self.sender, Message = self.text_message)
-            status,msg= send_message.send(message)
-
+            message = sendgrid.mail(To = self.sender, Message = self.text_message)
+            status,msg = send_message.send(message)
+        # avoid errors 
         except SendGridClientError:
             error_message = 'client errror'
             return error_message
