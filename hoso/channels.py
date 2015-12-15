@@ -68,16 +68,25 @@ class twitter(channel): #Class for twitter
 
 class mail(channel): #Class for mail
     
-    def __init__(self,sender,text_message):
-        self.sender=To_address
-        self.text_message=body
+    def __init__(self,sender,text_message,consumer_key, consumer_passwd):
+        self.sender = To_address
+        self.text_message =body
+        self.cousumer_key = api_username
+        self.consumer_password = api_key
+
+    def authenticate(self): #authentication for the mail service
+
+        Username = self.consumer_key
+        Password = self.consumer_password
+        try:
+            auth = sendgrid.sendGridclient('SEND_API_KEY')
         
     def broadcast(self):
-        send_message= sendgrid.sendGridclient(username,password)
+        
         message=sendgrid.Mail()
-        message.add_to("To_address")
-        message.set_text("body")
-        message=sendgrid.mail(to="to_address",text="body")
+        message.add_to(self.sender)
+        message.set_text(self.text_message)
+        message=sendgrid.mail(To = self.sender, Message = self.text_message)
         status,msg= send_message.send(message)
     
 
