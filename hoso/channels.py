@@ -1,6 +1,6 @@
 import tweepy
 import sendgrid
-from sendgrid import SendGridError, SendGridServerError,SendGridClientError
+from sendgrid import SendGridError, SendGridClientError, SendGridServerError
 import os
 
 
@@ -12,13 +12,21 @@ class channel(object): #Abstract class for all channels
         raise NotImplementedError
 
                 
-class twitter(channel): #Class for twitter
+class Twitter(channel): #Class for twitter
 
     def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret):
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.access_token = access_token
         self.access_token_secret = access_token_secret
+
+    def authenticate(self):
+        auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
+        auth.set_access_token(self.access_token, self.access_token_secret)
+        api = tweepy.API(auth)
+        return api
+    
+
 
 class mail(channel): #Class for mail
     
@@ -53,5 +61,3 @@ class mail(channel): #Class for mail
             status,msg = send_message.send(message)
         except Exception:
             return "Cannot send the mail"
-           
-        
