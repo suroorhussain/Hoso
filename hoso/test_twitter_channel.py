@@ -1,6 +1,7 @@
+import channels
 import mock
 import tweepy
-import channels
+#from channels import Twitter
 
 def test_auth():
     mock_OAuthHandler = mock.Mock()
@@ -16,7 +17,7 @@ def test_auth():
     mock_OAuthHandler.return_value = mock_auth
     mock_API.return_value = mock_api
 
-    t = Channels.Twitter("test_consumer_key",
+    t = channels.Twitter("test_consumer_key",
                 "test_consumer_secret",
                 "test_access_token",
                 "test_access_token_secret")
