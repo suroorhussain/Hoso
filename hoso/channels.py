@@ -26,7 +26,15 @@ class Twitter(channel): #Class for twitter
         api = tweepy.API(auth)
         return api
     
-
+    def broadcast(self, message):
+        api = self.authenticate()
+        try:
+            api.update_status(status=message)
+        except tweepy.TweepError as e:
+            message = e[0][0]['message']
+            code = e[0][0]['code']
+            raise ChannelError(message, code)
+            
 
 class mail(channel): #Class for mail
     
@@ -61,3 +69,5 @@ class mail(channel): #Class for mail
             status,msg = send_message.send(message)
         except Exception:
             return "Cannot send the mail"
+
+
