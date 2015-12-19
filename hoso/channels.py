@@ -71,3 +71,7 @@ class mail(channel): #Class for mail
             return "Cannot send the mail"
 
 
+class ChannelError(Exception):
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code
