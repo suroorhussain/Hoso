@@ -1,6 +1,6 @@
-import tweepy
+x1import tweepy
 import sendgrid
-from sendgrid import SendGridError, SendGridClientError, SendGridServerError
+from sendgrid import SendGridError, SendGridServerError,SendGridClientError
 import os
 
 
@@ -58,12 +58,12 @@ class mail(channel): #Class for mail
         try:
             login  = sendgrid.SendGridclient(Username, Password, raise_errors =True)
         except SendGridClientError:
-            error_message = 'client errror'
-        return error_message
+            error_message = 'client error'
+            return error_message
         
         except SendGridServerError:
             error_message = 'ServerError'
-        return error_message
+            return error_message
     
         message = sendgrid.Mail()
         message.add_to(self.sender)
