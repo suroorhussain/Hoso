@@ -1,6 +1,6 @@
 import tweepy
 import sendgrid
-from sendgrid import SendGridError, SendGridServerError,SendGridClientError
+from sendgrid import SendGridError, SendGridClientError, SendGridServerError
 import os
 
 
@@ -12,33 +12,29 @@ class channel(object): #Abstract class for all channels
         raise NotImplementedError
 
                 
-class twitter(channel): #Class for twitter
+class Twitter(channel): #Class for twitter
 
-    def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret, message):
+    def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret):
         self.consumer_key = consumer_key
         self.consumer_secret = consumer_secret
         self.access_token = access_token
         self.access_token_secret = access_token_secret
-        self.message = message
-        
-    def authentication(self,cfg):
-        auth = tweepy.OAuthHandler(self.consumer_key,self.consumer_secret)
-        auth.set_access_token(self.access_token,self.access_token_secret)
-        api = tweepy.API(auth)
-        user_name = api.me().name
-        return api
- 
-    def broadcast(self, api, message):
-        error_message =''
-        try:
-            status = api.update_status(status=self.message)
-            return error_message
-        except tweepy.TweepError as e:
-            error_message = e[0][0]['message']
-            error_code = e[0][0]['code']
-            #print error_message
-            return error_message
 
+    def authenticate(self):
+        auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
+        auth.set_access_token(self.access_token, self.access_token_secret)
+        api = tweepy.API(auth)
+        return api
+    
+    def broadcast(self, message):
+        api = self.authenticate()
+        try:
+            api.update_status(status=message)
+        except tweepy.TweepError as e:
+            message = e[0][0]['message']
+            code = e[0][0]['code']
+            raise ChannelError(message, code)
+            
 
 class mail(channel): #Class for mail
     
@@ -73,15 +69,9 @@ class mail(channel): #Class for mail
             status,msg = send_message.send(message)
         except Exception:
             return "Cannot send the mail"
-           
-        
-def twitter_api(cfg,message):     
-    consumer_key = cfg['consumer_key']
-    consumer_secret = cfg['consumer_secret']
-    access_token = cfg['access_token']
-    access_token_secret = cfg['access_token_secret']
 
-    twiter=twitter(consumer_key,consumer_secret,access_token,access_token_secret, message)
-    api=twiter.authentication(cfg)
-    status=twiter.broadcast(api, message)
-    return status
+
+class ChannelError(Exception):
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code
