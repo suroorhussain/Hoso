@@ -1,26 +1,33 @@
 import facebook
-class fb(channel): #Class for facebook
 
-    def __init__(self, token, message):
-        self.access_token = token
-        self.post = message
-        self.status = "Success"
-        self.error_code = 0
-        
+
+class channel(object): #Abstract class for all channels
+    def authenticate(self):
+        raise NotImplementedError
+
     def broadcast(self):
+        raise NotImplementedError
+
+    
+class ChannelError(Exception):
+
+    def __init__(self, message, code):
+        self.message = message
+        self.code = code
+
+        Exception.__init__(self, self.message)
+
+        
+class Facebook(channel):
+
+    def __init__(self, token = None):
+        if not token == None:
+            self.access_token = token
+
+    def broadcast(self, status):
+        graph = facebook.GraphAPI(self.access_token)
         try:
-            
-            print "starting broadcast"
-            graph = facebook.GraphAPI(self.access_token)
-            graph.put_object("me", "feed", message = self.post)
-            self.error_code = 1
-            
-        except facebook.GraphAPIError as err: 
-            self.error_code = -1
-            if 'expired' in err[0]:
-                self.status = "Token expired"
-            elif 'status' in err[0]:
-                self.status = "Duplicate message"
-            elif 'limit reached' in err[0]:
-                self.status = "Feed limit reached. Please Try again after 24 hours"
+            graph.put_object("me", "feed", message = status)
+        except facebook.GraphAPIError as e:
+            raise ChannelError(e[0], -1)
 
