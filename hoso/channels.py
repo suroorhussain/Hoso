@@ -13,6 +13,7 @@ class channel(object): #Abstract class for all channels
 
                 
 class Twitter(channel): #Class for twitter
+''' This class makes use of twitter api tweepy and it is reponsible for authenticating the user and posting the tweet'''
 
     def __init__(self, consumer_key, consumer_secret, access_token,access_token_secret):
         self.consumer_key = consumer_key
