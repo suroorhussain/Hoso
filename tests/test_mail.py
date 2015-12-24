@@ -1,6 +1,6 @@
-import channels
+import hoso.channels as channels
 from mock import Mock
-from channels import mail
+from hoso.channels import mail
 
 def test_authentication():
    mock = Mock()

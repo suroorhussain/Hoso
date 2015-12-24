@@ -1,4 +1,4 @@
-import channels
+import hoso.channels as channels
 import mock
 import tweepy
 
