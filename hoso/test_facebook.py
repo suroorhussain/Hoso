@@ -8,14 +8,14 @@ def test_facebook_authenticate():
     facebook.GraphAPI = mock.Mock(original_graph)
     mock_graph = mock.Mock(original_graph)
     facebook.GraphAPI.return_value = mock_graph
-    mock_graph.get_object.return_value = "name"
+    mock_graph.get_object.return_value = {'first_name':'suroor', 'last_name':'hussain'}
     
     fb = facebook_api.Facebook()
     name = fb.authenticate("token")
 
     facebook.GraphAPI.assert_called_with("token")
     mock_graph.get_object.assert_called_with("me")
-    assert name == 'name'
+    assert name == 'suroor hussain'
 
     facebook.GraphAPI = original_graph
 
