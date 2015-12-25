@@ -30,7 +30,7 @@ class Facebook(channel):
             self.access_token = token
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
-        return user['first_name'] + user['last_name'].encode('ascii', 'ignore')
+        return user['first_name'] + ' ' + user['last_name']
 
     def broadcast(self, status):
         graph = facebook.GraphAPI(self.access_token)
