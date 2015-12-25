@@ -15,7 +15,7 @@ def test_facebook_authenticate():
 
     facebook.GraphAPI.assert_called_with("token")
     mock_graph.get_object.assert_called_with("me")
-    assert name = 'name'
+    assert name == 'name'
 
     facebook.GraphAPI = original_graph
 
