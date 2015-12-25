@@ -1,5 +1,5 @@
 import facebook
-import facebook_api
+import hoso.channels as facebook_api
 import mock
 import pytest
 
