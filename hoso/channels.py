@@ -72,6 +72,7 @@ class mail(channel): #Class for mail
         except Exception:
             return "Cannot send the mail"
 
+        
 class Facebook(channel):
 
     def __init__(self, token = None):
@@ -95,6 +96,7 @@ class Facebook(channel):
 
 
 class ChannelError(Exception):
+    
     def __init__(self, message, code):
         self.message = message
         self.code = code
