@@ -19,6 +19,20 @@ def test_facebook_authenticate():
 
     facebook.GraphAPI = original_graph
 
+def test_facebook_authenticate_fail():
+    original_graph = facebook.GraphAPI
+    facebook.GraphAPI = mock.Mock(original_graph)
+    mock_graph = mock.Mock(original_graph)
+    facebook.GraphAPI.return_value = mock_graph
+    mock_graph.get_object.side_effect = facebook.GraphAPIError({'Error_description':'Token expired'})
+
+    fb = facebook_api.Facebook()
+    with pytest.raises(facebook_api.ChannelError):
+        fb.authenticate("token")
+
+    facebook.GraphAPI = original_graph
+        
+    
 def test_facebook_broadcast_success():
     original_graph = facebook.GraphAPI
     facebook.GraphAPI = mock.Mock(original_graph)
