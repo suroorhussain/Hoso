@@ -1,3 +1,4 @@
+import facebook
 import tweepy
 import sendgrid
 from sendgrid import SendGridError, SendGridClientError, SendGridServerError
