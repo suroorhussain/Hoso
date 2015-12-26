@@ -6,12 +6,18 @@ import os
 
 
 class channel(object): #Abstract class for all channels
+
+    def __init__(self):
+        self.auth_status = False
+        
     def authentication(self):
         raise NotImplementedError
 
     def broadcast(self):
         raise NotImplementedError
 
+    def add(self):
+        raise NotImplementedError
                 
 class Twitter(channel): #Class for twitter
     ''' This class makes use of twitter api tweepy and it is reponsible for authenticating the user and posting the tweet'''
