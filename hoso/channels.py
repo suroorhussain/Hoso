@@ -16,7 +16,7 @@ class channel(object): #Abstract class for all channels
     def broadcast(self):
         raise NotImplementedError
 
-    def add(self):
+    def get_credentials(self):
         raise NotImplementedError
                 
 class Twitter(channel): #Class for twitter
@@ -95,6 +95,8 @@ class Facebook(channel):
             graph.put_object("me", "feed", message = status)
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
+
+    def 
 
 
 class ChannelError(Exception):
