@@ -96,9 +96,11 @@ class Facebook(channel):
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
 
-    def 
+    def get_credentials(self):
+        token = raw_input("Please enter the access token obtained from https://developers.facebook.com/tools/explorer: ")
+        return {'access_token':token}
 
-
+    
 class ChannelError(Exception):
     
     def __init__(self, message, code):
