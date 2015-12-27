@@ -2,6 +2,8 @@ import facebook
 import hoso.channels as facebook_api
 import mock
 import pytest
+import __builtin__
+
 
 def test_facebook_authenticate():
     original_graph = facebook.GraphAPI
@@ -60,17 +62,16 @@ def test_facebook_broadcast_error():
         fb.broadcast("my post")
         
     facebook.GraphAPI = original_graph
-
-def test_facebook_get_credentials():
-    original = __builtins__['raw_input']
-    raw_input = mock.Mock(original)
-    raw_input.return_value = {'access_token':'token'}
+    
+@mock.patch('__builtin__.raw_input')
+def test_facebook_get_credentials(mock_raw_input):
+    mock_raw_input.return_value = 'token'
 
     fb = facebook_api.Facebook()
     cred = fb.get_credentials()
     
-    raw_input.assert_called_once()
+    mock_raw_input.assert_called_with("Please enter the access token obtained from https://developers.facebook.com/tools/explorer: ")
     assert cred == {'access_token':'token'}
-
-    __builtins__['raw_input'] = original
     
+    
+
