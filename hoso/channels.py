@@ -15,13 +15,25 @@ class channel(object): #Abstract class for all channels
                 
 class Twitter(channel): #Class for twitter
     ''' This class makes use of twitter api tweepy and it is reponsible for authenticating the user and posting the tweet'''
+    def get_credentials(self):
+        consumer_key = raw_input("Enter consumer key > ")
+        consumer_secret = raw_input("Enter consumer secret > ")
+        access_token = raw_input("Enter access token > ")
+        access_token_secret = raw_input("Enter access token secret >")
+        twitter_credentials = { 'consumer_key' : consumer_key, 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'access_token_secret' : access_token_secret }
+        return twitter_credentials
 
     
-    def authenticate(self):
+    def authenticate(self, twitter_credentials):
+        self.consumer_key = twitter_credentials['consumer_key']
+        self.consumer_secret = twitter_credentials['consumer_secret']
+        self.access_token = twitter_credentials['access_token']
+        self.access_token_secret = twitter_credentials['access_token_secret']
+        
         auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
         auth.set_access_token(self.access_token, self.access_token_secret)
         api = tweepy.API(auth)
-        return api
+        
     
     def broadcast(self, message):
         api = self.authenticate()
@@ -88,6 +100,16 @@ class Facebook(channel):
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
 
+def get_Credentials(channel_list):
+    for channel in channel_list:
+        if channel == 'Twitter':
+            consumer_key = ""
+            consumer_secret = ""
+            access_token = ""
+            access_token_secret = ""
+            twitter_credentials = {'consumer_key' : consumer_key, 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'access_token_secret' : access_token_secret }
+            return twitter_credentials
+        
 
 class ChannelError(Exception):
     def __init__(self, message, code):
