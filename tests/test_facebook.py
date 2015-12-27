@@ -61,3 +61,16 @@ def test_facebook_broadcast_error():
         
     facebook.GraphAPI = original_graph
 
+def test_facebook_get_credentials():
+    original = __builtins__['raw_input']
+    raw_input = mock.Mock(original)
+    raw_input.return_value = {'access_token':'token'}
+
+    fb = facebook_api.Facebook()
+    cred = fb.get_credentials()
+    
+    raw_input.assert_called_once()
+    assert cred == {'access_token':'token'}
+
+    __builtins__['raw_input'] = original
+    
