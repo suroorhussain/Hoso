@@ -6,9 +6,6 @@ import os
 
 
 class channel(object): #Abstract class for all channels
-
-    def __init__(self):
-        self.auth_status = False
         
     def authentication(self):
         raise NotImplementedError
@@ -84,10 +81,9 @@ class Facebook(channel):
     def authenticate(self, token):
         try:
             user = facebook.GraphAPI(token).get_object("me")
-            self.access_token = token
-            self.auth_status = True
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
+        self.access_token = token
 
     def broadcast(self, status):
         graph = facebook.GraphAPI(self.access_token)
