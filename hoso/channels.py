@@ -78,12 +78,12 @@ class mail(channel): #Class for mail
         
 class Facebook(channel):
             
-    def authenticate(self, token):
+    def authenticate(self, credentials):
         try:
-            user = facebook.GraphAPI(token).get_object("me")
+            user = facebook.GraphAPI(credentials['access_token']).get_object("me")
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
-        self.access_token = token
+        self.access_token = credentials['access_token']
 
     def broadcast(self, status):
         graph = facebook.GraphAPI(self.access_token)
