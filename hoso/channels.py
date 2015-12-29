@@ -25,14 +25,22 @@ class Twitter(channel): #Class for twitter
 
     
     def authenticate(self, twitter_credentials):
+
+        auth = tweepy.OAuthHandler(twitter_credentials['consumer_key'], twitter_credentials['consumer_secret'])
+        auth.set_access_token(twitter_credentials['access_token'], twitter_credentials['access_token_secret'])
+        api = tweepy.API(auth)
+        try: 
+            user = api.me()
+        except tweepy.TweepError as e:
+            message = e[0][0]['message']
+            code = e[0][0]['code']
+            raise ChannelError(message, code)
+        
         self.consumer_key = twitter_credentials['consumer_key']
         self.consumer_secret = twitter_credentials['consumer_secret']
         self.access_token = twitter_credentials['access_token']
         self.access_token_secret = twitter_credentials['access_token_secret']
-        
-        auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
-        auth.set_access_token(self.access_token, self.access_token_secret)
-        api = tweepy.API(auth)
+
         
     
     def broadcast(self, message):
