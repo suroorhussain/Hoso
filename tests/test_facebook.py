@@ -29,7 +29,7 @@ def test_facebook_authenticate_fail():
 
     fb = facebook_api.Facebook()
     with pytest.raises(facebook_api.ChannelError):
-        fb.authenticate("token")
+        fb.authenticate({'access_token':"token"})
 
     facebook.GraphAPI = original_graph
         
@@ -41,7 +41,7 @@ def test_facebook_broadcast_success():
     facebook.GraphAPI.return_value = graph_mock
     
     fb = facebook_api.Facebook()
-    fb.authenticate("token")
+    fb.authenticate({'access_token':"token"})
     fb.broadcast("my post")
 
     facebook.GraphAPI.assert_called_with("token")
@@ -57,7 +57,7 @@ def test_facebook_broadcast_error():
     graph_mock.put_object.side_effect = facebook.GraphAPIError({"error_description":"Error while broadcasting"})
 
     fb = facebook_api.Facebook()
-    fb.authenticate("token")
+    fb.authenticate({'access_token':"token"})
     with pytest.raises(facebook_api.ChannelError):
         fb.broadcast("my post")
         
