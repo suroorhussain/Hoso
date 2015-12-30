@@ -32,8 +32,8 @@ class Twitter(channel): #Class for twitter
         try: 
             user = api.me()
         except tweepy.TweepError as e:
-            message = e[0][0]['message']
-            code = e[0][0]['code']
+            message = "e[0][0]['message']"
+            code = "e[0][0]['code']"
             raise ChannelError(message, code)
         
         self.consumer_key = twitter_credentials['consumer_key']
@@ -44,12 +44,14 @@ class Twitter(channel): #Class for twitter
         
     
     def broadcast(self, message):
-        api = self.authenticate()
+        auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
+        auth.set_access_token(self.access_token, self.access_token_secret)
+        api = tweepy.API(auth)
         try:
             api.update_status(status=message)
         except tweepy.TweepError as e:
-            message = e[0][0]['message']
-            code = e[0][0]['code']
+            message = "e[0][0]['message']"
+            code = "e[0][0]['code']"
             raise ChannelError(message, code)
             
 
