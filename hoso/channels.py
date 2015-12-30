@@ -108,24 +108,6 @@ class Facebook(channel):
             graph.put_object("me", "feed", message = status)
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
-
-<<<<<<< HEAD
-def get_Credentials(channel_list):
-    for channel in channel_list:
-        if channel == 'Twitter':
-            consumer_key = ""
-            consumer_secret = ""
-            access_token = ""
-            access_token_secret = ""
-            twitter_credentials = {'consumer_key' : consumer_key, 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'access_token_secret' : access_token_secret }
-            return twitter_credentials
-        
-=======
-    def get_credentials(self):
-        token = raw_input("Please enter the access token obtained from https://developers.facebook.com/tools/explorer: ")
-        return {'access_token':token}
->>>>>>> c4ec5d055dfdebe698de89715d861ea7d657cf82
-
     
 class ChannelError(Exception):
     
