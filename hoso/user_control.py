@@ -1,14 +1,27 @@
+class User(object):
 
-class user_control():
-    
-    def available_channels():
-        raise NotImplementedError
-    
-    def message():
-        raise NotImplementedError
-        
-    def selected_channels():
+    def my_channels():
         raise NotImplementedError
 
-class default_user():
-    pass
+    def add_channel(channel_name):
+        raise NotImplementedError
+
+    def remove_channel(channel_name):
+        raise NotImplementedError
+
+    def select_channel(channel_name):
+        raise NotImplementedError
+
+    def send_message(message, selected_channels):
+        raise NotImplementedError
+
+    def logout():
+        raise NotImplementedError
+
+
+def add_user(username, password):
+    raise NotImplementedError
+
+
+
+
