@@ -4,28 +4,18 @@ import tweepy
 import __builtin__
 import pytest
 
-def test_raw_input(monkeypatch):
-    def mock_raw_input():
-         mock_consumer_key = mock.Mock()
-         mock_consumer_secret = mock.Mock()
-         mock_access_token = mock.Mock()
-         mock_access_token_secret = mock.Mock()
+@mock.patch('__builtin__.raw_input')
 
-         mock_consumer_key.return_value = 'key1'
-         mock_consumer_secret.return_value = 'key2'
-         mock_access_token.return_value = 'key3'
-         mock_access_token_secret.return_value = 'key4'
+def test_twitter_get_credentials(mock_raw_input):
+    mock_raw_input.side_effect = ['consumer_key', 'consumer_secret', 'access_token', 'access_token_secret']
+    
+    t = channels.Twitter()
+    credentials = t.get_credentials()
 
-         mock_dict = mock.Mock()
-         mock_dict.return_value = {'consumer_key': mock_consumer_key.return_value, 'consumer_secret' : mock_consumer_secret.return_value, 'access_token' : mock_access_token.return_value, 'access_token_secret' : mock_access_token_secret.return_value}
-         return mock_dict.return_value
-    
-    monkeypatch.setattr(__builtin__, 'raw_input', mock_raw_input)
-    retval = raw_input()
-    
-    assert retval == {'consumer_key' : 'key1', 'consumer_secret':'key2', 'access_token' : 'key3', 'access_token_secret' : 'key4'}
-    
-    
+    assert credentials == {'consumer_key':"consumer_key", 
+                'consumer_secret' :"consumer_secret", 
+                'access_token' :"access_token",
+                          'access_token_secret' :"access_token_secret"}
 
 
 def test_auth_correct():
