@@ -15,7 +15,8 @@ class channel(object): #Abstract class for all channels
 
     def get_credentials(self):
         raise NotImplementedError
-                
+
+    
 class Twitter(channel): #Class for twitter
     ''' This class makes use of twitter api tweepy and it is reponsible for authenticating the user and posting the tweet'''
     def get_credentials(self):
@@ -26,7 +27,6 @@ class Twitter(channel): #Class for twitter
         twitter_credentials = { 'consumer_key' : consumer_key, 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'access_token_secret' : access_token_secret }
         return twitter_credentials
 
-    
     def authenticate(self, twitter_credentials):
 
         auth = tweepy.OAuthHandler(twitter_credentials['consumer_key'], twitter_credentials['consumer_secret'])
@@ -44,8 +44,6 @@ class Twitter(channel): #Class for twitter
         self.access_token = twitter_credentials['access_token']
         self.access_token_secret = twitter_credentials['access_token_secret']
 
-        
-    
     def broadcast(self, message):
         auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
         auth.set_access_token(self.access_token, self.access_token_secret)
@@ -108,6 +106,11 @@ class Facebook(channel):
             graph.put_object("me", "feed", message = status)
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
+
+    def get_credentials(self):
+        token = raw_input("Please enter the access token obtained from https://developers.facebook.com/tools/explorer: ")
+        return {'access_token':token}
+
     
 class ChannelError(Exception):
     
