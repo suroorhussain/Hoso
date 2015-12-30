@@ -1,21 +1,32 @@
+import hoso.channels
+import pickle
+
+
 class User(object):
 
-    def my_channels():
+    def __init__(self, username, password):
+        with open("../users/username", 'rb') as user_file:
+            user_data = pickle.loads(user_file.read())
+            self.password = user_data['password']
+            self.registered_channels = user_data['registered_channels']
+            self.credentials = user_data['credentials']
+            
+    def my_channels(self):
         raise NotImplementedError
 
-    def add_channel(channel_name):
+    def add_channel(self, channel_name):
         raise NotImplementedError
 
-    def remove_channel(channel_name):
+    def remove_channel(self, channel_name):
         raise NotImplementedError
 
-    def select_channel(channel_name):
+    def select_channel(self, channel_name):
         raise NotImplementedError
 
-    def send_message(message, selected_channels):
+    def send_message(self, message, selected_channels):
         raise NotImplementedError
 
-    def logout():
+    def save_user_data(self):
         raise NotImplementedError
 
 
