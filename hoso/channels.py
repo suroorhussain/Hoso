@@ -6,12 +6,15 @@ import os
 
 
 class channel(object): #Abstract class for all channels
+        
     def authentication(self):
         raise NotImplementedError
 
     def broadcast(self):
         raise NotImplementedError
 
+    def get_credentials(self):
+        raise NotImplementedError
                 
 class Twitter(channel): #Class for twitter
     ''' This class makes use of twitter api tweepy and it is reponsible for authenticating the user and posting the tweet'''
@@ -89,19 +92,15 @@ class mail(channel): #Class for mail
         except Exception:
             return "Cannot send the mail"
 
+        
 class Facebook(channel):
-
-    def __init__(self, token = None):
-        if not token == None:
-            self.access_token = token
             
-    def authenticate(self, token):
+    def authenticate(self, credentials):
         try:
-            user = facebook.GraphAPI(token).get_object("me")
-            self.access_token = token
+            user = facebook.GraphAPI(credentials['access_token']).get_object("me")
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
-        return user['first_name'] + ' ' + user['last_name']
+        self.access_token = credentials['access_token']
 
     def broadcast(self, status):
         graph = facebook.GraphAPI(self.access_token)
@@ -110,6 +109,7 @@ class Facebook(channel):
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
 
+<<<<<<< HEAD
 def get_Credentials(channel_list):
     for channel in channel_list:
         if channel == 'Twitter':
@@ -120,8 +120,15 @@ def get_Credentials(channel_list):
             twitter_credentials = {'consumer_key' : consumer_key, 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'access_token_secret' : access_token_secret }
             return twitter_credentials
         
+=======
+    def get_credentials(self):
+        token = raw_input("Please enter the access token obtained from https://developers.facebook.com/tools/explorer: ")
+        return {'access_token':token}
+>>>>>>> c4ec5d055dfdebe698de89715d861ea7d657cf82
 
+    
 class ChannelError(Exception):
+    
     def __init__(self, message, code):
         self.message = message
         self.code = code
