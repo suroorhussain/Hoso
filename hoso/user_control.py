@@ -19,7 +19,9 @@ class User(object):
         raise NotImplementedError
 
     def remove_channel(self, channel_name):
-        raise NotImplementedError
+        registered_channels = self.registered_channels
+        registered_channels.remove(channel_name)
+        self.registered_channels = registered_channels
 
     def select_channel(self, channel_name):
         raise NotImplementedError
