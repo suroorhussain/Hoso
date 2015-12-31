@@ -38,5 +38,15 @@ def add_user(username, password):
     raise NotImplementedError
 
 
+class AuthenticationError(Exception):
+    
+    def __init__(self, message):
+        self.message = message
+        Exception.__init__(self, self.message)
 
 
+class BroadcastError(Exception):
+    
+    def __init__(self, message):
+        self.message = message
+        Exception.__init__(self, self.message)
