@@ -19,7 +19,11 @@ def test_add_channel():
     pass
 
 def test_remove_channel():
-    pass
+    channels_of_user = original_data['registered_channels']
+    channel_to_remove = 'Twitter'
+    channels_of_user.remove('Twitter')
+    assert channels_of_user == test_user.remove_channel('Twitter')
+    
 
 def test_select_channel():
     pass
