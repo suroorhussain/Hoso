@@ -22,7 +22,8 @@ def test_remove_channel():
     channels_of_user = original_data['registered_channels']
     channel_to_remove = 'Twitter'
     channels_of_user.remove('Twitter')
-    assert channels_of_user == test_user.remove_channel('Twitter')
+    test_user.remove_channel('Twitter')
+    assert channels_of_user == test_user.registered_channels
     
 
 def test_select_channel():
