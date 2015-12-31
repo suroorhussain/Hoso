@@ -5,7 +5,7 @@ import pickle
 class User(object):
 
     def __init__(self, username):
-        with open("../users/" + username, 'rb') as user_file:
+        with open('users/'+ username, 'rb') as user_file:
             user_data = pickle.loads(user_file.read())
             self.password = user_data['password']
             self.registered_channels = user_data['registered_channels']
