@@ -24,9 +24,12 @@ class User(object):
     def select_channel(self, channel_name):
         raise NotImplementedError
 
-    def send_message(self, message, selected_channels):
-        raise NotImplementedError
-
+    def send_message(self, message):
+         for media in self.selected_channels:
+            channel = getattr(hoso.channels, media)()
+            channel.authenticate(self.credentials[media])
+            channel.broadcast(message)
+            
     def save_user_data(self):
         raise NotImplementedError
 

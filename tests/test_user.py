@@ -39,7 +39,7 @@ def test_send_message():
     mocked_twitter.authenticate.assert_called_with(test_user.credentials['Twitter'])
     mocked_twitter.broadcast.assert_called_with('message')
 
-    mocked_facebook.authenticate.assert_called_with(test_user.credentials['facebook'])
+    mocked_facebook.authenticate.assert_called_with(test_user.credentials['Facebook'])
     mocked_facebook.broadcast.assert_called_with('message')
 
     channels.Twitter = original_twitter
