@@ -16,7 +16,18 @@ def test_my_channels():
     assert channels_list == channels_in_file
 
 def test_add_channel():
-    pass
+    channels_of_user = original_data['registered_channels']
+    credentials = original_data['credentials']
+    channels_of_user.remove('Twitter')
+    del credentials['Twitter']
+    
+    channels_of_user.append('Twitter')
+    credentials['Twitter'] = {'consumer_key' :'consumer_key', 'consumer_secret' : 'consumer_secret', 'access_token' : 'access_token', 'access_token_secret' : 'access_token_secret'}
+
+    test_user.add_channel('Twitter',credentials)
+    assert channels_of_user == test_user.registered_channels
+    assert credentials == test_user.credentials
+    
 '''
 def test_remove_channel():
     channels_of_user = original_data['registered_channels']
@@ -29,11 +40,11 @@ def test_remove_channel():
     assert credentials == test_user.credentials
     test_user.credentials = original_data['credentials']
     test_user.registered_channels = original_data['registered_channels']
-'''    
-
+    
+'''
 def test_select_channel():
     pass
-
+'''
 def test_send_message():
     original_twitter = channels.Twitter
     original_facebook = channels.Facebook
@@ -54,7 +65,7 @@ def test_send_message():
 
     channels.Twitter = original_twitter
     channels.Facebook = original_facebook
-
+'''
 def test_save_user_data():
     pass
 
