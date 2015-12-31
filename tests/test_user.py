@@ -1,6 +1,8 @@
 from hoso import user_control
 import pickle
 import os .path
+from hoso import channels
+import mock
 
 curdir = os.path.dirname(__file__)
 with open(os.path.join(curdir, "../users/test_user"), 'rb') as handle:
@@ -23,9 +25,27 @@ def test_select_channel():
     pass
 
 def test_send_message():
-    pass
+    original_twitter = channels.Twitter
+    original_facebook = channels.Facebook
+    channels.Twitter, mocked_twitter = mock.Mock(original_twitter), mock.Mock(original_twitter)
+    channels.Facebook, mocked_facebook = mock.Mock(original_facebook), mock.Mock(original_facebook)
 
-def test_logout():
+    channels.Facebook.return_value = mocked_facebook
+    channels.Twitter.return_value = mocked_twitter
+    
+    test_user.selected_channels = ['Twitter', 'Facebook']
+    test_user.send_message('message')
+
+    mocked_twitter.authenticate.assert_called_with(test_user.credentials['Twitter'])
+    mocked_twitter.broadcast.assert_called_with('message')
+
+    mocked_facebook.authenticate.assert_called_with(test_user.credentials['facebook'])
+    mocked_facebook.broadcast.assert_called_with('message')
+
+    channels.Twitter = original_twitter
+    channels.Facebook = original_facebook
+
+def test_save_user_data():
     pass
 
 
