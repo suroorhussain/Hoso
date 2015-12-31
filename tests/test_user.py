@@ -7,7 +7,9 @@ with open("../users/test_user", 'rb') as handle:
 test_user = user_control.User('test_user')
 
 def test_my_channels():
-    pass
+    channels_list = test_user.my_channels
+    channels_in_file = original_data['registered_channels']
+    assert channels_list == channels_in_file
 
 def test_add_channel():
     pass
