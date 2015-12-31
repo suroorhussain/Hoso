@@ -1,4 +1,4 @@
-import hoso.channels
+from hoso import channels
 import pickle
 import os.path
 
@@ -11,7 +11,8 @@ class User(object):
             self.password = user_data['password']
             self.registered_channels = user_data['registered_channels']
             self.credentials = user_data['credentials']
-            
+            self.auth_errors = ['']
+            self.broadcast_errors = ['']
     def my_channels(self):
         return self.registered_channels
 
@@ -25,10 +26,26 @@ class User(object):
         raise NotImplementedError
 
     def send_message(self, message):
-         for media in self.selected_channels:
-            channel = getattr(hoso.channels, media)()
-            channel.authenticate(self.credentials[media])
-            channel.broadcast(message)
+        for media in self.selected_channels:
+            channel = getattr(channels, media)()
+            try:
+                channel.authenticate(self.credentials[media])
+            except channels.ChannelError as e:
+                self.auth_errors.append(media+':'+e.message)
+
+            try:
+                channel.broadcast(message)
+            except channels.ChannelError as e:
+                self.broadcast_errors.append(media+':'+e.message)
+
+        if self.auth_errors != ['']:
+            auth_error = self.auth_errors
+            self.auth_errors = ['']
+            raise AuthenticationError(','.join(auth_error))
+        elif self.broadcast_errors != ['']:
+            broadcast_error = self.broadcast_errors
+            self.broadcast_errors = ['']
+            raise BroadcastError(','.join(broadcast_error))
             
     def save_user_data(self):
         raise NotImplementedError
@@ -43,7 +60,6 @@ class AuthenticationError(Exception):
     def __init__(self, message):
         self.message = message
         Exception.__init__(self, self.message)
-
 
 class BroadcastError(Exception):
     
