@@ -1,10 +1,10 @@
 import hoso.user_control
 import pickle
 
-with open("../users/test_user", 'rb') as handle:
+with open("users/test_user", 'rb') as handle:
     original_data = pickle.loads(handle.read())
 
-test_user = user_control.User('test_user')
+test_user = hoso.user_control.User('test_user')
 
 def test_my_channels():
     channels_list = test_user.my_channels
@@ -27,5 +27,5 @@ def test_logout():
     pass
 
 
-with open("../users/test_user", 'rb') as handle:
+with open("users/test_user", 'wb') as handle:
     pickle.dump(original_data, handle)
