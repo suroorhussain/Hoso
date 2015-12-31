@@ -24,7 +24,7 @@ class Twitter(channel): #Class for twitter
         consumer_secret = raw_input("Enter consumer secret > ")
         access_token = raw_input("Enter access token > ")
         access_token_secret = raw_input("Enter access token secret >")
-        twitter_credentials = { 'consumer_key' : consumer_key, 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'access_token_secret' : access_token_secret }
+        twitter_credentials = { 'consumer_secret' : consumer_secret, 'access_token' : access_token, 'consumer_key' : consumer_key, 'access_token_secret' : access_token_secret }
         return twitter_credentials
 
     def authenticate(self, twitter_credentials):
