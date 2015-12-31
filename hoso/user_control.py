@@ -15,9 +15,6 @@ class User(object):
     def my_channels(self):
         return self.registered_channels
 
-    def add_channel(self, channel_name):
-        raise NotImplementedError
-
     def remove_channel(self, channel_name):
         registered_channels = self.registered_channels
         credentials = self.credentials
@@ -27,6 +24,10 @@ class User(object):
 
         self.registered_channels = registered_channels
         self.credentials = credentials
+   
+    def add_channel(self, channel_name, credentials):
+        self.registered_channels.append(channel_name)
+        self.credentials.update(credentials)
         
     def select_channel(self, channel_name):
         raise NotImplementedError
