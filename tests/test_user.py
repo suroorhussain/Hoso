@@ -17,14 +17,19 @@ def test_my_channels():
 
 def test_add_channel():
     pass
-
+'''
 def test_remove_channel():
     channels_of_user = original_data['registered_channels']
+    credentials = original_data['credentials']
     channel_to_remove = 'Twitter'
     channels_of_user.remove('Twitter')
+    del credentials['Twitter']
     test_user.remove_channel('Twitter')
     assert channels_of_user == test_user.registered_channels
-    
+    assert credentials == test_user.credentials
+    test_user.credentials = original_data['credentials']
+    test_user.registered_channels = original_data['registered_channels']
+'''    
 
 def test_select_channel():
     pass
