@@ -1,11 +1,12 @@
 import hoso.channels
 import pickle
-
+import os.path
 
 class User(object):
 
     def __init__(self, username):
-        with open('users/'+ username, 'rb') as user_file:
+        current_directory = os.path.dirname(__file__)
+        with open(os.path.join(current_directory, '../users/'+ username), 'rb') as user_file:
             user_data = pickle.loads(user_file.read())
             self.password = user_data['password']
             self.registered_channels = user_data['registered_channels']
