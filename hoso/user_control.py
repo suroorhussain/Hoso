@@ -12,7 +12,7 @@ class User(object):
             self.credentials = user_data['credentials']
             
     def my_channels(self):
-        raise NotImplementedError
+        return self.registered_channels
 
     def add_channel(self, channel_name):
         raise NotImplementedError
