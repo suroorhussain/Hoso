@@ -83,8 +83,19 @@ def test_send_message_broadcast_fail():
     channels.Twitter = original_twitter
     channels.Facebook = original_facebook
 def test_save_user_data():
-    pass
+    test_data = {
+        'username':test_user.username,
+        'password':test_user.password,
+        'registered_channels':test_user.registered_channels,
+        'credentials':test_user.credentials
+        }
+    test_user.save_user_data()
+
+    with open(os.path.join(curdir, "../users/test_user"), 'rb') as handle:
+         data = pickle.loads(handle.read())
+    assert test_data == data
 
 
 with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
     pickle.dump(original_data, handle)
+print original_data
