@@ -19,10 +19,10 @@ def test_my_channels():
 
 
 def test_add_channel_name():
-    test_user.remove_channel('Facebook')
-    test_user.add_channel('Facebook')
-    original_data['registered_channels'].remove('Facebook')
-    original_data['registered_channels'].append('Facebook')
+    test_user.remove_channel('Twitter')
+    test_user.add_channel('Twitter')
+    original_data['registered_channels'].remove('Twitter')
+    original_data['registered_channels'].append('Twitter')
     assert original_data['registered_channels'] == test_user.registered_channels
 
 def test_add_channel_credentials():
@@ -41,9 +41,13 @@ def test_add_channel_credentials():
     test_user.add_channel_credentials('Facebook')
     
     mocked_twitter.get_credentials.return_value = mock_twitter_credentials
-    mock_twitter_credentials = {'access_token':'token'}
+    mock_twitter_credentials = {'access_token' : 'token',
+                                'access_token_secret' : 'token_secret',
+                                'consumer_key': 'key',
+                                'consumer_secret' : 'secret'}
     test_user.add_channel_credentials('Facebook')
     
+    assert test_user.credentials['Twitter'] == mock_twitter_credentials
     assert test_user.credentials['Facebook'] == mock_fb_credentials
 
     channels.Twitter = original_twitter
@@ -51,7 +55,7 @@ def test_add_channel_credentials():
 
 def test_add_duplicate_channel():
     with pytest.raises(user_control.DuplicateChannel):
-        test_user.add_channel('Facebook')
+        test_user.add_channel('Twitter')
     
 def test_remove_channel_name():
     original_data['registered_channels'].remove('Facebook')
@@ -60,10 +64,10 @@ def test_remove_channel_name():
 '''
 def test_remove_channel_credentials():
     credentials = original_data['credentials']
-    del credentials['Facebook']
-    test_user.remove_channel_credentials('Facebook')
+    del credentials['Twitter']
+    test_user.remove_channel_credentials('Twitter')
     assert credentials == test_user.credentials
-    test_user.add_channel('FaceBook')
+    test_user.add_channel('Twitter')
     test_user.credentials = original_data['credentials']
 '''
 def test_select_channel():
