@@ -18,63 +18,32 @@ def test_my_channels():
     channels_in_file = original_data['registered_channels']
     assert channels_list == channels_in_file
 
-
-def test_add_channel_name():
-    test_user.remove_channel('Twitter')
-    test_user.add_channel('Twitter')
-    original_data['registered_channels'].remove('Twitter')
-    original_data['registered_channels'].append('Twitter')
-    assert original_data['registered_channels'] == test_user.registered_channels
-
-def test_add_channel_credentials():
-    original_twitter = channels.Twitter
-    original_facebook = channels.Facebook
-    channels.Twitter, mocked_twitter = mock.Mock(original_twitter), mock.Mock(original_twitter)
-    channels.Facebook, mocked_facebook = mock.Mock(original_facebook), mock.Mock(original_facebook)
-
-    channels.Facebook.return_value = mocked_facebook
-    channels.Twitter.return_value = mocked_twitter
-    mock_fb_credentials = mock.Mock()
-    mock_twitter_credentials = mock.Mock()
-
-    mocked_facebook.get_credentials.return_value = mock_fb_credentials
-    mock_fb_credentials = {'access_token':'token'}
-    test_user.add_channel_credentials('Facebook')
-    
-    mocked_twitter.get_credentials.return_value = mock_twitter_credentials
-    mock_twitter_credentials = {'access_token' : 'token',
-                                'access_token_secret' : 'token_secret',
-                                'consumer_key': 'key',
-                                'consumer_secret' : 'secret'}
-    test_user.add_channel_credentials('Facebook')
-    
-    assert test_user.credentials['Twitter'] == mock_twitter_credentials
-    assert test_user.credentials['Facebook'] == mock_fb_credentials
-
-    channels.Twitter = original_twitter
-    channels.Facebook = original_facebook
-
-def test_add_duplicate_channel():
-    with pytest.raises(user_control.DuplicateChannel):
-        test_user.add_channel('Twitter')
-    
 def test_remove_channel_name():
     data = original_data
     data['registered_channels'].remove('Facebook')
     test_user.remove_channel('Facebook')
-    assert test_user.registered_channels == data['registered_channels']
-'''
-def test_remove_channel_credentials():
-    data = original_data
-    credentials = data['credentials']
-    del credentials['Twitter']
-    test_user.remove_channel_credentials('Twitter')
-    assert credentials == test_user.credentials
-    test_user.add_channel('Twitter')
-    test_user.credentials = data['credentials']
-'''
-def test_select_channel():
-    pass
+    assert 'Facebook' not in test_user.registered_channels
+    assert'Facebook' not in test_user.credentials.keys()
+
+def test_add_channel():
+    original_facebook = channels.Facebook
+    channels.Facebook, mocked_facebook = mock.Mock(original_facebook), mock.Mock(original_facebook)
+
+    channels.Facebook.return_value = mocked_facebook
+    mock_fb_credentials = {'access_token':'token'}
+    mocked_facebook.get_credentials.return_value = mock_fb_credentials
+    
+    test_user.add_channel('Facebook')
+    
+    assert 'Facebook' in test_user.registered_channels
+    assert'Facebook' in test_user.credentials.keys()
+    assert test_user.credentials['Facebook'] == mock_fb_credentials
+    
+    channels.Facebook = original_facebook
+    
+def test_add_duplicate_channel():
+    with pytest.raises(user_control.DuplicateChannel):
+        test_user.add_channel('Facebook')
 
 def test_send_message():
     original_twitter = channels.Twitter
@@ -132,7 +101,7 @@ def test_send_message_broadcast_fail():
 
     channels.Twitter = original_twitter
     channels.Facebook = original_facebook
-'''
+
 def test_save_user_data():
     test_data = {
         'username':test_user.username,
@@ -147,10 +116,6 @@ def test_save_user_data():
     assert test_data == data
 
 
-'''
-#with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
- #   pickle.dump(original_data, handle)
-#with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
-#    pickle.dump(original_data, handle)
-#print original_data
+with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
+   pickle.dump(original_data, handle)
 
