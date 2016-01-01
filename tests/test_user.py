@@ -19,12 +19,15 @@ def test_my_channels():
 
 
 def test_add_channel():
-    test_user.add_channel('Facebook')
     test_user.remove_channel('Facebook')
+    test_user.add_channel('Facebook')
     original_data['registered_channels'].remove('Facebook')
     original_data['registered_channels'].append('Facebook')
     assert original_data['registered_channels'] == test_user.registered_channels
 
+def test_add_duplicate_channel():
+    with pytest.raises(user_control.DuplicateChannel):
+        test_user.add_channel('Facebook')
     
 def test_remove_channel():
     original_data['registered_channels'].remove('Facebook')
