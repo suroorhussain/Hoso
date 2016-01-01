@@ -25,8 +25,8 @@ class User(object):
     def select_channel(self, channel_name):
         raise NotImplementedError
 
-    def send_message(self, message):
-        for media in self.selected_channels:
+    def send_message(self, message, selected_channels):
+        for media in selected_channels:
             channel = getattr(channels, media)()
             try:
                 channel.authenticate(self.credentials[media])
