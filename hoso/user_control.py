@@ -8,6 +8,7 @@ class User(object):
         current_directory = os.path.dirname(__file__)
         with open(os.path.join(current_directory, '../users/'+ username), 'rb') as user_file:
             user_data = pickle.loads(user_file.read())
+            self.username = username
             self.password = user_data['password']
             self.registered_channels = user_data['registered_channels']
             self.credentials = user_data['credentials']
@@ -48,7 +49,15 @@ class User(object):
             raise BroadcastError(','.join(broadcast_error))
             
     def save_user_data(self):
-        raise NotImplementedError
+         user_data = {
+        'username':self.username,
+        'password':self.password,
+        'registered_channels':self.registered_channels,
+        'credentials':self.credentials
+        }
+         current_directory = os.path.dirname(__file__)
+         with open(os.path.join(current_directory, '../users/'+ self.username), 'wb') as user_file:
+             pickle.dump(user_data, user_file)
 
 
 def add_user(username, password):
