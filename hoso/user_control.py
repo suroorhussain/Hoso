@@ -36,13 +36,8 @@ class User(object):
     def select_channel(self, channel_name):
         raise NotImplementedError
 
-<<<<<<< HEAD
-    def send_message(self, message):
-        for media in self.selected_channels:
-=======
     def send_message(self, message, selected_channels):
         for media in selected_channels:
->>>>>>> 35dfa7e0b5c4999147bf19bc114bf8990fc02a16
             channel = getattr(channels, media)()
             try:
                 channel.authenticate(self.credentials[media])
@@ -76,23 +71,18 @@ class User(object):
 
 
 def add_user(username, password):
-<<<<<<< HEAD
-    raise NotImplementedError
+     data = {'username':username, 'password':password, 'registered_channels':[], 'credentials':{}}
+     current_directory = os.path.dirname(__file__)
+     filename = file(os.path.join(current_directory, '../users/'+ username), 'wb')
+     pickle.dump(data, filename)
+     filename.close()
 
 class DuplicateChannel(Exception):
     
     def __init__(self, message):
         self.message = message
         Exception.__init__(self, self.message)
-
-=======
-    data = {'username':username, 'password':password, 'registered_channels':[], 'credentials':{}}
-    current_directory = os.path.dirname(__file__)
-    filename = file(os.path.join(current_directory, '../users/'+ username), 'wb')
-    pickle.dump(data, filename)
-    filename.close()
->>>>>>> 35dfa7e0b5c4999147bf19bc114bf8990fc02a16
-
+   
 class AuthenticationError(Exception):
     
     def __init__(self, message):
