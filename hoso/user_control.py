@@ -20,11 +20,17 @@ class User(object):
         if channel_name in self.registered_channels:
             raise DuplicateChannel('Error because channel already exist')
         self.registered_channels.append(channel_name)
-      #  channel = getattr(channels, channel_name)()
-       # channel.get_credentials()
-
+    
+    def add_channel_credentials(self, channel_name):
+        channel = getattr(channels, channel_name)()
+        channel_credentials = channel.get_credentials()
+       # self.credentials['channel_name'] = new_credentials
+        
     def remove_channel(self, channel_name):
         self.registered_channels.remove(channel_name)
+
+    def remove_channel_credentials(self, channel_name):
+        del self.credentials[channel_name]
 
     def select_channel(self, channel_name):
         raise NotImplementedError
