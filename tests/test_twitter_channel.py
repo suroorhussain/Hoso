@@ -12,10 +12,10 @@ def test_twitter_get_credentials(mock_raw_input):
     t = channels.Twitter()
     credentials = t.get_credentials()
 
-    assert credentials == {'consumer_key':"consumer_key", 
-                'consumer_secret' :"consumer_secret", 
-                'access_token' :"access_token",
-                          'access_token_secret' :"access_token_secret"}
+    assert credentials == { 'consumer_secret' : 'consumer_secret', 
+                            'access_token' : 'access_token', 
+                            'consumer_key' : 'consumer_key', 
+                            'access_token_secret' : 'access_token_secret'}
 
 
 def test_auth_correct():
@@ -34,9 +34,9 @@ def test_auth_correct():
 
     t = channels.Twitter()
 
-    api = t.authenticate({'consumer_key':"test_consumer_key", 
-                'consumer_secret' :"test_consumer_secret", 
-                'access_token' :"test_access_token",
+    api = t.authenticate({'consumer_secret' :"test_consumer_secret",
+                          'access_token' :"test_access_token",
+                          'consumer_key':"test_consumer_key",
                           'access_token_secret' :"test_access_token_secret"})
     mock_OAuthHandler.assert_called_with("test_consumer_key", "test_consumer_secret")
     mock_auth.set_access_token.assert_called_with("test_access_token","test_access_token_secret")
@@ -67,11 +67,10 @@ def test_auth_fail():
 
     t = channels.Twitter()
     with pytest.raises(channels.ChannelError):
-        t.authenticate({'consumer_key':"test_consumer_key", 
-                'consumer_secret' :"test_consumer_secret", 
-                'access_token' :"test_access_token",
-                          'access_token_secret' :"test_access_token_secret"})
-
+        t.authenticate({'consumer_secret' :"test_consumer_secret",
+                        'access_token' :"test_access_token",
+                        'consumer_key':"test_consumer_key",
+                        'access_token_secret' :"test_access_token_secret"})
     tweepy.OAuthHandler = original_OAuthHandler
     tweepy.API = original_API
 
@@ -91,11 +90,10 @@ def test_broadcast_success():
     mock_API.return_value = mock_api
 
     t = channels.Twitter()
-    t.authenticate({'consumer_key':"test_consumer_key", 
-                'consumer_secret' :"test_consumer_secret", 
-                'access_token' :"test_access_token",
-                          'access_token_secret' :"test_access_token_secret"})
-
+    t.authenticate({'consumer_secret' :"test_consumer_secret",
+                    'access_token' :"test_access_token",
+                    'consumer_key':"test_consumer_key",
+                    'access_token_secret' :"test_access_token_secret"})
     t.broadcast('msg')
     mock_api.update_status.assert_called_with(status="msg")
     
@@ -120,10 +118,10 @@ def test_broadcast_fail():
 
     t = channels.Twitter()
     with pytest.raises(channels.ChannelError):
-        t.authenticate({'consumer_key':"test_consumer_key", 
-                'consumer_secret' :"test_consumer_secret", 
-                'access_token' :"test_access_token",
-                          'access_token_secret' :"test_access_token_secret"})
+        t.authenticate({'consumer_secret' :"test_consumer_secret",
+                        'access_token' :"test_access_token",
+                        'consumer_key':"test_consumer_key",
+                        'access_token_secret' :"test_access_token_secret"})
         t.broadcast('msg')
     
     tweepy.OAuthHandler = original_OAuthHandler
