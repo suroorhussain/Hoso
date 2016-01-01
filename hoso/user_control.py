@@ -17,11 +17,9 @@ class User(object):
         return self.registered_channels
 
     def add_channel(self, channel_name):
-        #if channel_name not in self.registered_channels:
-            self.registered_channels.append(channel_name)
-        #else:
-          #  raise duplicateChannel(channel_name)
-            
+        if channel_name in self.registered_channels:
+            raise DuplicateChannel('Error because channel already exist')
+        self.registered_channels.append(channel_name)
       #  channel = getattr(channels, channel_name)()
        # channel.get_credentials()
 
@@ -60,7 +58,7 @@ class User(object):
 def add_user(username, password):
     raise NotImplementedError
 
-class duplicateChannel(Exception):
+class DuplicateChannel(Exception):
     
     def __init__(self, message):
         self.message = message
