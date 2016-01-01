@@ -3,11 +3,13 @@ import pickle
 import os .path
 from hoso import channels
 import mock
+import pytest
 
 curdir = os.path.dirname(__file__)
 with open(os.path.join(curdir, "../users/test_user"), 'rb') as handle:
     original_data = pickle.loads(handle.read())
 
+user_data = original_data
 test_user = user_control.User('test_user')
 
 def test_my_channels():
@@ -15,36 +17,23 @@ def test_my_channels():
     channels_in_file = original_data['registered_channels']
     assert channels_list == channels_in_file
 
-def test_add_channel():
-    channels_of_user = original_data['registered_channels']
-    credentials = original_data['credentials']
-    channels_of_user.remove('Twitter')
-    del credentials['Twitter']
-    
-    channels_of_user.append('Twitter')
-    credentials['Twitter'] = {'consumer_key' :'consumer_key', 'consumer_secret' : 'consumer_secret', 'access_token' : 'access_token', 'access_token_secret' : 'access_token_secret'}
 
-    test_user.add_channel('Twitter',credentials)
-    assert channels_of_user == test_user.registered_channels
-    assert credentials == test_user.credentials
+def test_add_channel():
+    test_user.add_channel('Facebook')
+    test_user.remove_channel('Facebook')
+    original_data['registered_channels'].remove('Facebook')
+    original_data['registered_channels'].append('Facebook')
+    assert original_data['registered_channels'] == test_user.registered_channels
+
     
-'''
 def test_remove_channel():
-    channels_of_user = original_data['registered_channels']
-    credentials = original_data['credentials']
-    channel_to_remove = 'Twitter'
-    channels_of_user.remove('Twitter')
-    del credentials['Twitter']
-    test_user.remove_channel('Twitter')
-    assert channels_of_user == test_user.registered_channels
-    assert credentials == test_user.credentials
-    test_user.credentials = original_data['credentials']
-    test_user.registered_channels = original_data['registered_channels']
-    
-'''
+    original_data['registered_channels'].remove('Facebook')
+    test_user.remove_channel('Facebook')
+    assert test_user.registered_channels == original_data['registered_channels']
+
 def test_select_channel():
     pass
-'''
+
 def test_send_message():
     original_twitter = channels.Twitter
     original_facebook = channels.Facebook
@@ -65,10 +54,10 @@ def test_send_message():
 
     channels.Twitter = original_twitter
     channels.Facebook = original_facebook
-'''
+
 def test_save_user_data():
     pass
 
 
-with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
-    pickle.dump(original_data, handle)
+#with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
+ #   pickle.dump(original_data, handle)
