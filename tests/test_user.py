@@ -4,6 +4,10 @@ import os .path
 from hoso import channels
 import mock
 import pytest
+<<<<<<< HEAD
+=======
+
+>>>>>>> 35dfa7e0b5c4999147bf19bc114bf8990fc02a16
 
 curdir = os.path.dirname(__file__)
 with open(os.path.join(curdir, "../users/test_user"), 'rb') as handle:
@@ -82,8 +86,8 @@ def test_send_message():
     channels.Facebook.return_value = mocked_facebook
     channels.Twitter.return_value = mocked_twitter
     
-    test_user.selected_channels = ['Twitter', 'Facebook']
-    test_user.send_message('message')
+    selected_channels = ['Twitter', 'Facebook']
+    test_user.send_message('message', selected_channels)
 
     mocked_twitter.authenticate.assert_called_with(test_user.credentials['Twitter'])
     mocked_twitter.broadcast.assert_called_with('message')
@@ -93,10 +97,61 @@ def test_send_message():
 
     channels.Twitter = original_twitter
     channels.Facebook = original_facebook
+    
+def test_send_message_auth_fail():
+    original_twitter = channels.Twitter
+    original_facebook = channels.Facebook
+    channels.Twitter, mocked_twitter = mock.Mock(original_twitter), mock.Mock(original_twitter)
+    channels.Facebook, mocked_facebook = mock.Mock(original_facebook), mock.Mock(original_facebook)
 
+    channels.Facebook.return_value = mocked_facebook
+    channels.Twitter.return_value = mocked_twitter
+    mocked_facebook.authenticate.side_effect = channels.ChannelError('authentication error', -1)
+    mocked_twitter.authenticate.side_effect = channels.ChannelError('authentication error', -1)
+
+    selected_channels = ['Twitter', 'Facebook']
+    with pytest.raises(user_control.AuthenticationError):
+        test_user.send_message('message', selected_channels)
+
+    channels.Twitter = original_twitter
+    channels.Facebook = original_facebook
+
+def test_send_message_broadcast_fail():
+    original_twitter = channels.Twitter
+    original_facebook = channels.Facebook
+    channels.Twitter, mocked_twitter = mock.Mock(original_twitter), mock.Mock(original_twitter)
+    channels.Facebook, mocked_facebook = mock.Mock(original_facebook), mock.Mock(original_facebook)
+
+    channels.Facebook.return_value = mocked_facebook
+    channels.Twitter.return_value = mocked_twitter
+    mocked_facebook.broadcast.side_effect = channels.ChannelError('authentication error', -1)
+    mocked_twitter.broadcast.side_effect = channels.ChannelError('authentication error', -1)
+
+    selected_channels = ['Twitter', 'Facebook']
+    with pytest.raises(user_control.BroadcastError):
+        test_user.send_message('message', selected_channels)
+
+    channels.Twitter = original_twitter
+    channels.Facebook = original_facebook
 def test_save_user_data():
-    pass
+    test_data = {
+        'username':test_user.username,
+        'password':test_user.password,
+        'registered_channels':test_user.registered_channels,
+        'credentials':test_user.credentials
+        }
+    test_user.save_user_data()
+
+    with open(os.path.join(curdir, "../users/test_user"), 'rb') as handle:
+         data = pickle.loads(handle.read())
+    assert test_data == data
 
 
+<<<<<<< HEAD
 #with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
  #   pickle.dump(original_data, handle)
+=======
+with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
+    pickle.dump(original_data, handle)
+print original_data
+>>>>>>> 35dfa7e0b5c4999147bf19bc114bf8990fc02a16
