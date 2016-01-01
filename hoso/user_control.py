@@ -61,8 +61,11 @@ class User(object):
 
 
 def add_user(username, password):
-    raise NotImplementedError
-
+    data = {'username':username, 'password':password, 'registered_channels':[], 'credentials':{}}
+    current_directory = os.path.dirname(__file__)
+    filename = file(os.path.join(current_directory, '../users/'+ username), 'wb')
+    pickle.dump(data, filename)
+    filename.close()
 
 class AuthenticationError(Exception):
     
