@@ -4,10 +4,7 @@ import os .path
 from hoso import channels
 import mock
 import pytest
-<<<<<<< HEAD
-=======
 
->>>>>>> 35dfa7e0b5c4999147bf19bc114bf8990fc02a16
 
 curdir = os.path.dirname(__file__)
 with open(os.path.join(curdir, "../users/test_user"), 'rb') as handle:
@@ -62,17 +59,19 @@ def test_add_duplicate_channel():
         test_user.add_channel('Twitter')
     
 def test_remove_channel_name():
-    original_data['registered_channels'].remove('Facebook')
+    data = original_data
+    data['registered_channels'].remove('Facebook')
     test_user.remove_channel('Facebook')
-    assert test_user.registered_channels == original_data['registered_channels']
+    assert test_user.registered_channels == data['registered_channels']
 '''
 def test_remove_channel_credentials():
-    credentials = original_data['credentials']
+    data = original_data
+    credentials = data['credentials']
     del credentials['Twitter']
     test_user.remove_channel_credentials('Twitter')
     assert credentials == test_user.credentials
     test_user.add_channel('Twitter')
-    test_user.credentials = original_data['credentials']
+    test_user.credentials = data['credentials']
 '''
 def test_select_channel():
     pass
@@ -133,6 +132,7 @@ def test_send_message_broadcast_fail():
 
     channels.Twitter = original_twitter
     channels.Facebook = original_facebook
+'''
 def test_save_user_data():
     test_data = {
         'username':test_user.username,
@@ -147,11 +147,10 @@ def test_save_user_data():
     assert test_data == data
 
 
-<<<<<<< HEAD
+'''
 #with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
  #   pickle.dump(original_data, handle)
-=======
-with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
-    pickle.dump(original_data, handle)
-print original_data
->>>>>>> 35dfa7e0b5c4999147bf19bc114bf8990fc02a16
+#with open(os.path.join(curdir, "../users/test_user"), 'wb') as handle:
+#    pickle.dump(original_data, handle)
+#print original_data
+
