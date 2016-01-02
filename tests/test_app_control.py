@@ -22,7 +22,9 @@ def test_select_channels():
     pass
 
 def test_view_selected_channels():
-    pass
+    application_control.selected_channels = ['Twitter','Facebook']
+    view_channels = application_control.view_selected_channels()
+    assert application_control.selected_channels == view_channels
 
 def test_deselect():
     selected_channels = ['Twitter', 'Facebook', 'Mail']
