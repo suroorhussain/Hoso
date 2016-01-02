@@ -25,7 +25,12 @@ def test_view_selected_channels():
     pass
 
 def test_deselect():
-    pass
+    selected_channels = ['Twitter', 'Facebook', 'Mail']
+    application_control.selected_channels = ['Twitter', 'Facebook', 'Mail']
+    application_control.deselect('Mail')
+    selected_channels.remove('Mail')
+    assert application_control.selected_channels == selected_channels
+    
 
 def test_deselect_notesxisting():
     pass
