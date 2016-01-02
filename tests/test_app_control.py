@@ -1,4 +1,5 @@
 from hoso import application_control
+import pytest
 
 def test_login():
     pass
@@ -32,7 +33,9 @@ def test_deselect():
     application_control.deselect('Mail')
     selected_channels.remove('Mail')
     assert application_control.selected_channels == selected_channels
-    
 
 def test_deselect_notesxisting():
-    pass
+    application_control.selected_channels = []
+    with pytest.raises(application_control.Channel_name_Error):
+        application_control.deselect('FaceBook')
+
