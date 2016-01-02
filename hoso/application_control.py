@@ -18,4 +18,4 @@ def view_selected_channels():
     return selected_channels
 
 def deselect(channel_name):
-    pass
+    selected_channels.remove(channel_name)
