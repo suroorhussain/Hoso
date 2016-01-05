@@ -1,3 +1,5 @@
 facebook-sdk
 tweepy
 sendgrid
+mock
+pytest

@@ -1,4 +1,5 @@
 from hoso import user_control
+import os.path
 
 selected_channels = []
 user_name = 'test_user'
@@ -11,7 +12,9 @@ def register(username, password):
     pass
 
 def get_all_channels():
-    pass
+    curdir = os.path.dirname(__file__)
+    with open(os.path.join(curdir, "channel_list.txt"), 'r') as channel_list:
+        return channel_list.readlines()
 
 def select_channels(channel_list, user_ob):
     for i in range(len(channel_list)):

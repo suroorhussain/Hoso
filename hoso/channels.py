@@ -91,15 +91,15 @@ class Facebook(channel):
             
     def authenticate(self, credentials):
         try:
-            user = facebook.GraphAPI(credentials['access_token']).get_object("me")
+            test_graph = facebook.GraphAPI(credentials['access_token'])
+            user = test_graph.get_object("me")
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
-        self.access_token = credentials['access_token']
+        self.graph = test_graph
 
     def broadcast(self, status):
-        graph = facebook.GraphAPI(self.access_token)
         try:
-            graph.put_object("me", "feed", message = status)
+            self.graph.put_object("me", "feed", message = status)
         except facebook.GraphAPIError as e:
             raise ChannelError(e[0], -1)
 

@@ -8,6 +8,6 @@ setup( name ='Hoso',
        author_email='surusuroor@gmail.com',
        license='MIT',
        packages=['hoso'],
-       install_requires=['tweepy', 'facebook-sdk', 'sendgrid'],
+       install_requires=['tweepy', 'facebook-sdk', 'sendgrid', 'mock', 'pytest', 'pickle'],
        zip_safe=False
        )
