@@ -1,9 +1,19 @@
 from hoso import application_control
+from hoso import user_control
 import pytest
-
+import mock
 def test_login():
-    pass
+    original_user = user_control.User
+    user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
 
+    user_control.User.return_value = mock_user
+    mock_user.password = 'password'
+
+    user = application_control.login('username', 'password')
+
+    user_control.User.assert_called_with('username', 'password')
+    assert user == mock_user
+    
 def test_login_wronguser():
     pass
 
@@ -14,9 +24,6 @@ def test_register():
     pass
 
 def test_register_existing_user():
-    pass
-
-def test_get_all_channels():
     pass
 
 def test_select_channels():
