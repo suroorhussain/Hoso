@@ -9,6 +9,10 @@ def login(username, password):
         user = user_control.User(username)
         if user.password == password:
             return user
+        else:
+            raise LoginError('Invalid password')
+    else:
+        raise LoginError('Username does not exist')
     
 def register(username, password):
     pass
@@ -34,3 +38,9 @@ class Channel_name_Error(Exception):
     def __init__(self, message):
         self.message = message
         super(Channel_name_Error, self).__init__(message)
+
+class LoginError(Exception):
+    
+    def __init__(self, message):
+        self.message = message
+        super(LoginError, self).__init__(message)
