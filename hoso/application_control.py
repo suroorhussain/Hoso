@@ -13,13 +13,18 @@ def register(username, password):
 def get_all_channels():
     pass
 
-def select_channels(channel_list, ob):
-    pass
+def select_channels(channel_list, user_ob):
+    for i in range(len(channel_list)):
+        if channel_list[i] not in user_ob.registered_channels:
+            user_ob.add_channel(channel_list[i])
+    global selected_channels
+    selected_channels = channel_list
 
 def view_selected_channels():
     return selected_channels
 
 def deselect(channel_name):
+    global selected_channels
     if channel_name in selected_channels:
         selected_channels.remove(channel_name)
     else:
