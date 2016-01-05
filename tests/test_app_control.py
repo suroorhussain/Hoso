@@ -2,6 +2,8 @@ from hoso import application_control
 from hoso import user_control
 import pytest
 import mock
+import os.path
+
 def test_login():
     original_user = user_control.User
     user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
@@ -13,12 +15,26 @@ def test_login():
 
     user_control.User.assert_called_with('username', 'password')
     assert user == mock_user
-    
-def test_login_wronguser():
-    pass
 
+    user_control.User = original_user
+    
 def test_login_wrongpass():
-    pass
+    original_user = user_control.User
+    user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
+
+    user_control.User.return_value = mock_user
+    mock_user.password = 'passwords'
+
+    with pytest.raises(application_control.LoginError):
+        user = application_control.login('username', 'password')
+
+def test_login_wronguser():
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = False
+
+    with pytest.raises(application_control.LoginError):
+        user = application_control.login('username', 'password')
 
 def test_register():
     pass
