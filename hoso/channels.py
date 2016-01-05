@@ -38,23 +38,19 @@ class Twitter(channel): #Class for twitter
             message = "e[0][0]['message']"
             code = "e[0][0]['code']"
             raise ChannelError(message, code)
+       
+        self.api = api
         
-        self.consumer_key = twitter_credentials['consumer_key']
-        self.consumer_secret = twitter_credentials['consumer_secret']
-        self.access_token = twitter_credentials['access_token']
-        self.access_token_secret = twitter_credentials['access_token_secret']
-
     def broadcast(self, message):
-        auth = tweepy.OAuthHandler(self.consumer_key, self.consumer_secret)
-        auth.set_access_token(self.access_token, self.access_token_secret)
-        api = tweepy.API(auth)
         try:
-            api.update_status(status=message)
+            self.api.update_status(status=message)
         except tweepy.TweepError as e:
             message = "e[0][0]['message']"
             code = "e[0][0]['code']"
             raise ChannelError(message, code)
-            
+'''
+edits authentication and broadcast module
+'''
 
 class mail(channel): #Class for mail
     

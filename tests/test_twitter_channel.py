@@ -41,11 +41,9 @@ def test_auth_correct():
     mock_OAuthHandler.assert_called_with("test_consumer_key", "test_consumer_secret")
     mock_auth.set_access_token.assert_called_with("test_access_token","test_access_token_secret")
     mock_API.assert_called_with(mock_auth)
-    assert t.consumer_key == 'test_consumer_key'
-    assert t.consumer_secret == 'test_consumer_secret'
-    assert t.access_token == 'test_access_token'
-    assert t.access_token_secret == 'test_access_token_secret'
-
+    
+    assert t.api == mock_api
+    
     tweepy.OAuthHandler = original_OAuthHandler
     tweepy.API = original_API
 
@@ -73,56 +71,28 @@ def test_auth_fail():
                         'access_token_secret' :"test_access_token_secret"})
     tweepy.OAuthHandler = original_OAuthHandler
     tweepy.API = original_API
-
    
 def test_broadcast_success():
-    mock_OAuthHandler = mock.Mock()
-    mock_auth = mock.Mock()
-    mock_API = mock.Mock()
-    mock_api = mock.Mock()
-
-    original_OAuthHandler = tweepy.OAuthHandler
-    original_API = tweepy.API
-    tweepy.OAuthHandler = mock_OAuthHandler
-    tweepy.API = mock_API
-    
-    mock_OAuthHandler.return_value = mock_auth
-    mock_API.return_value = mock_api
-
     t = channels.Twitter()
-    t.authenticate({'consumer_secret' :"test_consumer_secret",
-                    'access_token' :"test_access_token",
-                    'consumer_key':"test_consumer_key",
-                    'access_token_secret' :"test_access_token_secret"})
-    t.broadcast('msg')
-    mock_api.update_status.assert_called_with(status="msg")
+    mocked_api = mock.Mock()
     
-    tweepy.OAuthHandler = original_OAuthHandler
-    tweepy.API = original_API
+    t.api = mocked_api
+
+    t.broadcast('msg')
+  
+    mocked_api.update_status.assert_called_with(status="msg")    
 
 def test_broadcast_fail():
-    mock_OAuthHandler = mock.Mock()
-    mock_auth = mock.Mock()
-    mock_API = mock.Mock()
-    mock_api = mock.Mock()
-
-    original_OAuthHandler = tweepy.OAuthHandler
-    original_API = tweepy.API
-    tweepy.OAuthHandler = mock_OAuthHandler
-    tweepy.API = mock_API
-    
-    mock_OAuthHandler.return_value = mock_auth
-    mock_API.return_value = mock_api
-   
-    mock_api.update_status.side_effect = tweepy.TweepError({'Error message':'error code'})
 
     t = channels.Twitter()
+    mocked_api = mock.Mock()
+    t.api = mocked_api
+    mocked_api.update_status.side_effect = tweepy.TweepError({'Error message':'error code'})
+
     with pytest.raises(channels.ChannelError):
-        t.authenticate({'consumer_secret' :"test_consumer_secret",
-                        'access_token' :"test_access_token",
-                        'consumer_key':"test_consumer_key",
-                        'access_token_secret' :"test_access_token_secret"})
         t.broadcast('msg')
     
-    tweepy.OAuthHandler = original_OAuthHandler
-    tweepy.API = original_API
+
+'''
+edits test for authentication and broadcast
+'''
