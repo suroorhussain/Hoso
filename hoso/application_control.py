@@ -2,17 +2,18 @@ from hoso import user_control
 import os.path
 
 selected_channels = []
-user_name = 'test_user'
-user_ob = user_control.User(user_name)
+curdir = getdir(__file__)
 
 def login(username, password):
-    pass
-
+    if os.path.exists(os.path.join(curdir, '../users/'+username)):
+        user = user_control.User(username)
+        if user.password == password:
+            return user
+    
 def register(username, password):
     pass
 
 def get_all_channels():
-    curdir = os.path.dirname(__file__)
     with open(os.path.join(curdir, "channel_list.txt"), 'r') as channel_list:
         return channel_list.readlines()
 
@@ -32,4 +33,4 @@ class Channel_name_Error(Exception):
     
     def __init__(self, message):
         self.message = message
-        Exception.__init__(self, self.message)
+        super(Channel_name_Error, self).__init__(message)
