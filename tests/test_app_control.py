@@ -1,4 +1,6 @@
 from hoso import application_control
+import mock
+from hoso import user_control
 import pytest
 
 def test_login():
@@ -20,7 +22,20 @@ def test_get_all_channels():
     pass
 
 def test_select_channels():
-    pass
+    channel_list = ['Twitter', 'Facebook']
+    selected_channels = []
+    user_ob = user_control.User('test_user')
+    original_add_channel = user_ob.add_channel
+    mocked_add_channel = mock.Mock()
+    user_ob.add_channel = mocked_add_channel
+    registered_channels = ['Facebook']
+
+    for i in range(len(channel_list)):
+        if channel_list[i] not in user_ob.registered_channels:
+            user_ob.mocked_add_channel.assert_called_with(channel_list(i))
+    application_control.select_channels(channel_list, user_ob)
+    assert application_control.selected_channels == channel_list
+    user_ob.add_channel = original_add_channel
 
 def test_view_selected_channels():
     application_control.selected_channels = ['Twitter','Facebook']
