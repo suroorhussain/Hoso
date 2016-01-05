@@ -2,7 +2,7 @@ from hoso import user_control
 import os.path
 
 selected_channels = []
-curdir = getdir(__file__)
+curdir = os.path.dirname(__file__)
 
 def login(username, password):
     if os.path.exists(os.path.join(curdir, '../users/'+username)):
