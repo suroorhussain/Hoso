@@ -7,16 +7,19 @@ import os.path
 def test_login():
     original_user = user_control.User
     user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
-
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = True
     user_control.User.return_value = mock_user
     mock_user.password = 'password'
 
     user = application_control.login('username', 'password')
 
-    user_control.User.assert_called_with('username', 'password')
+    user_control.User.assert_called_with('username')
     assert user == mock_user
 
     user_control.User = original_user
+    os.path.exists = original_path
     
 def test_login_wrongpass():
     original_user = user_control.User
@@ -28,6 +31,7 @@ def test_login_wrongpass():
     with pytest.raises(application_control.LoginError):
         user = application_control.login('username', 'password')
 
+    user_control.User = original_user
 def test_login_wronguser():
     original_path = os.path.exists
     os.path.exists = mock.Mock(original_path)
@@ -36,6 +40,8 @@ def test_login_wronguser():
     with pytest.raises(application_control.LoginError):
         user = application_control.login('username', 'password')
 
+    os.path.exists = original_path
+    
 def test_register():
     pass
 
