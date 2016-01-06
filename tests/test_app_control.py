@@ -32,6 +32,7 @@ def test_login_wrongpass():
         user = application_control.login('username', 'password')
 
     user_control.User = original_user
+
 def test_login_wronguser():
     original_path = os.path.exists
     os.path.exists = mock.Mock(original_path)
@@ -41,9 +42,24 @@ def test_login_wronguser():
         user = application_control.login('username', 'password')
 
     os.path.exists = original_path
- 
+
 def test_register():
-   pass
+    original_user = user_control.User
+    user_control.User, mocked_user_ob = mock.Mock(), mock.Mock()
+    user_control.User.return_value = mocked_user_ob
+
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = False
+
+    ob = application_control.register('username', 'password')
+    user_control.User.assert_called_with('username')
+    
+    mocked_user_ob.add_user.assert_called_with('username','password')
+    assert ob == mocked_user_ob
+    
+    user_control.User = original_user
+    os.path.exists = original_path
 
 def test_register_existing_user():
     original_path = os.path.exists
@@ -54,7 +70,6 @@ def test_register_existing_user():
     os.path.exists = original_path
 
     
-
 def test_select_channels():
     channel_list = ['Twitter', 'Facebook']
     selected_channels = []
@@ -87,4 +102,5 @@ def test_deselect_notesxisting():
     application_control.selected_channels = []
     with pytest.raises(application_control.Channel_name_Error):
         application_control.deselect('FaceBook')
+
 
