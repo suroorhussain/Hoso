@@ -74,12 +74,26 @@ def test_select_channels_1():
 
     original_user = user_control.User
     user_control.User = mock.Mock()
-    mocked_ob = mock.Mock()
-    mocked_ob.return_value = user_control.User
+    mocked_ob = user_control.User
     channel_list = ['mail']
     mocked_ob.registered_channels = ['Twitter']
     application_control.select_channels(channel_list, mocked_ob)
     mocked_ob.add_channel.assert_called_with('mail')
+    assert application_control.selected_channels == channel_list
+    user_control.User = original_user
+
+
+    
+def test_select_channels_2():
+    #Test to avoid adding to users registered channels if channel already exist in users registered channels 
+
+    original_user = user_control.User
+    user_control.User = mock.Mock()
+    mocked_ob = user_control.User
+    channel_list = ['Twitter']
+    mocked_ob.registered_channels = ['Twitter']
+    application_control.select_channels(channel_list, mocked_ob)
+    mocked_ob.add_channel.assert_not_called()
     assert application_control.selected_channels == channel_list
     user_control.User = original_user
 
