@@ -2,14 +2,17 @@ from hoso import user_control
 import os.path
 
 selected_channels = []
-user_name = 'test_user'
-user_ob = user_control.User(user_name)
 
 def login(username, password):
     pass
 
 def register(username, password):
-    pass
+    if os.path.exists(username):
+        raise userNameError('%s already exist'%username)
+    else:
+        user_control.add_user(username, password)
+        user_ob = user_control.User(username)
+        return user_ob
 
 def get_all_channels():
     curdir = os.path.dirname(__file__)
@@ -34,6 +37,12 @@ def deselect(channel_name):
         raise Channel_name_Error('Channel does not exist')
 
 class Channel_name_Error(Exception):
+    
+    def __init__(self, message):
+        self.message = message
+        Exception.__init__(self, self.message)
+
+class userNameError(Exception):
     
     def __init__(self, message):
         self.message = message
