@@ -27,9 +27,9 @@ def get_all_channels():
         return channel_list.readlines()
 
 def select_channels(channel_list, user_ob):
-    for i in range(len(channel_list)):
-        if channel_list[i] not in user_ob.registered_channels:
-            user_ob.add_channel(channel_list[i])
+    for channel_name in channel_list:
+        if channel_name not in user_ob.registered_channels:
+            user_ob.add_channel(channel_name)
     global selected_channels
     selected_channels = channel_list
 
