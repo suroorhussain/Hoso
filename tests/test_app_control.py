@@ -2,6 +2,7 @@ from hoso import application_control
 import mock
 from hoso import user_control
 import pytest
+import os.path
 
 def test_login():
     pass
@@ -16,7 +17,12 @@ def test_register():
     pass
 
 def test_register_existing_user():
-    pass
+    username = 'test_usr'
+    password = 'password'
+    path = os.path.exists(username)
+    with pytest.raises(application_control.userNameError):
+        application_control.register(username, password)
+
 
 def test_get_all_channels():
     pass
@@ -32,7 +38,7 @@ def test_select_channels():
 
     for i in range(len(channel_list)):
         if channel_list[i] not in user_ob.registered_channels:
-            user_ob.mocked_add_channel.assert_called_with(channel_list(i))
+            mocked_add_channel.assert_called_with(channel_list(i))
     application_control.select_channels(channel_list, user_ob)
     assert application_control.selected_channels == channel_list
     user_ob.add_channel = original_add_channel
