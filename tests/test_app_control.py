@@ -1,31 +1,59 @@
 from hoso import application_control
-import mock
 from hoso import user_control
 import pytest
+import mock
 import os.path
 
 def test_login():
-    pass
+    original_user = user_control.User
+    user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = True
+    user_control.User.return_value = mock_user
+    mock_user.password = 'password'
 
-def test_login_wronguser():
-    pass
+    user = application_control.login('username', 'password')
 
+    user_control.User.assert_called_with('username')
+    assert user == mock_user
+
+    user_control.User = original_user
+    os.path.exists = original_path
+    
 def test_login_wrongpass():
-    pass
+    original_user = user_control.User
+    user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
 
+    user_control.User.return_value = mock_user
+    mock_user.password = 'passwords'
+
+    with pytest.raises(application_control.LoginError):
+        user = application_control.login('username', 'password')
+
+    user_control.User = original_user
+def test_login_wronguser():
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = False
+
+    with pytest.raises(application_control.LoginError):
+        user = application_control.login('username', 'password')
+
+    os.path.exists = original_path
+ 
 def test_register():
-    pass
+   pass
 
 def test_register_existing_user():
-    username = 'test_usr'
-    password = 'password'
-    path = os.path.exists(username)
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = True
     with pytest.raises(application_control.userNameError):
-        application_control.register(username, password)
+        application_control.register('username', 'password')
+    os.path.exists = original_path
 
-
-def test_get_all_channels():
-    pass
+    
 
 def test_select_channels():
     channel_list = ['Twitter', 'Facebook']
