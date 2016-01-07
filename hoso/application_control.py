@@ -19,7 +19,7 @@ def register(username, password):
         raise userNameError('%s already exist'%username)
     else:
         user_ob = user_control.User(username)
-        user_ob.add_user(username, password)
+        user_control.add_user(username, password)
         return user_ob
 
 def get_all_channels():
