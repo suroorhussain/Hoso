@@ -65,7 +65,7 @@ def test_register():
     user_control.add_user.assert_called_with('username','password')
     assert ob == mocked_user_ob
     
-    user_control.add_channel = original_add_user
+    user_control.add_user = original_add_user
     user_control.User = original_user
     os.path.exists = original_path
 
