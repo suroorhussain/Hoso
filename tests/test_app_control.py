@@ -116,4 +116,9 @@ def test_deselect_notesxisting():
     with pytest.raises(application_control.Channel_name_Error):
         application_control.deselect('FaceBook')
 
+def test_logout():
+    user = mock.Mock(user_control.User) 
+    
+    application_control.logout(user)
 
+    user.save_user_data.assert_called_with()
