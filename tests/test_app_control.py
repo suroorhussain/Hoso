@@ -22,6 +22,9 @@ def test_login():
     os.path.exists = original_path
     
 def test_login_wrongpass():
+    original_path = os.path.exists
+    os.path.exists = mock.Mock(original_path)
+    os.path.exists.return_value = True
     original_user = user_control.User
     user_control.User, mock_user = mock.Mock(original_user), mock.Mock(original_user)
 
@@ -32,7 +35,8 @@ def test_login_wrongpass():
         user = application_control.login('username', 'password')
 
     user_control.User = original_user
-
+    os.path.exists = original_path
+    
 def test_login_wronguser():
     original_path = os.path.exists
     os.path.exists = mock.Mock(original_path)
@@ -82,8 +86,6 @@ def test_select_channels_1():
     assert application_control.selected_channels == channel_list
     user_control.User = original_user
 
-
-    
 def test_select_channels_2():
     #Test to avoid adding to users registered channels if channel already exist in users registered channels 
 
