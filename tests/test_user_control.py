@@ -6,11 +6,10 @@ import os.path
 
 
 script_directory = os.path.dirname(user_control.__file__)
+
 @mock.patch('__builtin__.file')
 @mock.patch('pickle.dump')
 def test_add_user_new(mock_dump, mock_file):
-     # mock_file.return_value = mock.Mock(__builtin__.file)
-    # mock_file.__exit__ = file_exit
     user_control.add_user('username', 'password')
 
     file_path = os.path.join(script_directory, '../users/username')
