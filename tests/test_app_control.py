@@ -45,9 +45,12 @@ def test_login_wronguser():
 
 def test_register():
     original_user = user_control.User
-    user_control.User, mocked_user_ob = mock.Mock(), mock.Mock()
+    user_control.User= mock.Mock()
+    mocked_user_ob = mock.Mock()
     user_control.User.return_value = mocked_user_ob
-
+    original_add_user = user_control.add_user
+    user_control.add_user = mock.Mock()
+    
     original_path = os.path.exists
     os.path.exists = mock.Mock(original_path)
     os.path.exists.return_value = False
@@ -55,9 +58,10 @@ def test_register():
     ob = application_control.register('username', 'password')
     user_control.User.assert_called_with('username')
     
-    mocked_user_ob.add_user.assert_called_with('username','password')
+    user_control.add_user.assert_called_with('username','password')
     assert ob == mocked_user_ob
     
+    user_control.add_channel = original_add_user
     user_control.User = original_user
     os.path.exists = original_path
 
