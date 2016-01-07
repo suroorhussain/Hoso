@@ -43,6 +43,10 @@ def deselect(channel_name):
     else:
         raise Channel_name_Error('Channel does not exist')
 
+def logout(user):
+    user.save_user_data()
+    exit
+    
 class Channel_name_Error(Exception):
     
     def __init__(self, message):
