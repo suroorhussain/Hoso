@@ -15,11 +15,11 @@ def login(username, password):
         raise LoginError('Username does not exist')
     
 def register(username, password):
-    if os.path.exists(username):
+    if os.path.exists(os.path.join(curdir, '../users/'+username)):
         raise userNameError('%s already exist'%username)
     else:
-        user_ob = user_control.User(username)
         user_control.add_user(username, password)
+        user_ob = user_control.User(username)
         return user_ob
 
 def get_all_channels():
