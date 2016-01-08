@@ -78,7 +78,7 @@ def test_send_message_auth_fail():
     mocked_twitter.authenticate.side_effect = channels.ChannelError('authentication error', -1)
 
     selected_channels = ['Twitter', 'Facebook']
-    with pytest.raises(user_control.AuthenticationError):
+    with pytest.raises(user_control.UserError):
         test_user.send_message('message', selected_channels)
 
     channels.Twitter = original_twitter
@@ -96,7 +96,7 @@ def test_send_message_broadcast_fail():
     mocked_twitter.broadcast.side_effect = channels.ChannelError('authentication error', -1)
 
     selected_channels = ['Twitter', 'Facebook']
-    with pytest.raises(user_control.BroadcastError):
+    with pytest.raises(user_control.UserError):
         test_user.send_message('message', selected_channels)
 
     channels.Twitter = original_twitter

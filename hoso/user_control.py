@@ -12,8 +12,8 @@ class User(object):
             self.password = user_data['password']
             self.registered_channels = user_data['registered_channels']
             self.credentials = user_data['credentials']
-            self.auth_errors = ['']
-            self.broadcast_errors = ['']
+            self.auth_errors = []
+            self.broadcast_errors = []
     def my_channels(self):
         return self.registered_channels
 
@@ -45,15 +45,14 @@ class User(object):
                 self.broadcast_errors.append(media+':'+e.message)
                 continue
             
-        if self.auth_errors != ['']:
+        if self.auth_errors != [] or self.broadcast_errors != []:
             auth_error = self.auth_errors
-            self.auth_errors = ['']
-            raise AuthenticationError(','.join(auth_error))
-        elif self.broadcast_errors != ['']:
             broadcast_error = self.broadcast_errors
-            self.broadcast_errors = ['']
-            raise BroadcastError(','.join(broadcast_error))
-            
+            self.auth_errors = []
+            self.broadcast_errors = []
+            error_message = 'Authentication Errors: '+','.join(auth_error)+'\n Broadcast Error: '+','.join(broadcast_error)
+            raise UserError(error_message)
+        
     def save_user_data(self):
          user_data = {
         'username':self.username,
@@ -79,13 +78,7 @@ class DuplicateChannel(Exception):
         self.message = message
         Exception.__init__(self, self.message)
    
-class AuthenticationError(Exception):
-    
-    def __init__(self, message):
-        self.message = message
-        Exception.__init__(self, self.message)
-
-class BroadcastError(Exception):
+class UserError(Exception):
     
     def __init__(self, message):
         self.message = message
