@@ -21,8 +21,11 @@ else:
 user = application_control.login('terminal_user', 'password')
 while True:
     application_control.select_channels(selected_channels, user)
-    user.send_message(message, application_control.selected_channels)
-
+    try:
+        user.send_message(message, application_control.selected_channels)
+    except Exception as e:
+        print "The following errors occured\n {}".format(e)
+        
     c = raw_input("Would you like to make another update? (y/n): ")
 
     if c == 'y':
