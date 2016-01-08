@@ -1,4 +1,4 @@
-from hoso import user_control
+import  user_control
 import os.path
 
 selected_channels = []

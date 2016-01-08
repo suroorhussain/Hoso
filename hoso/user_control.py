@@ -1,4 +1,4 @@
-from hoso import channels
+import channels
 import pickle
 import os.path
 
