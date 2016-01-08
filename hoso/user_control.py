@@ -37,12 +37,14 @@ class User(object):
                 channel.authenticate(self.credentials[media])
             except channels.ChannelError as e:
                 self.auth_errors.append(media+':'+e.message)
+                continue
 
             try:
                 channel.broadcast(message)
             except channels.ChannelError as e:
                 self.broadcast_errors.append(media+':'+e.message)
-
+                continue
+            
         if self.auth_errors != ['']:
             auth_error = self.auth_errors
             self.auth_errors = ['']
