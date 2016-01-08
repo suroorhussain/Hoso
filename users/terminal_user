@@ -1,0 +1,16 @@
+(dp0
+S'username'
+p1
+S'terminal_user'
+p2
+sS'credentials'
+p3
+(dp4
+sS'password'
+p5
+S'password'
+p6
+sS'registered_channels'
+p7
+(lp8
+s.
